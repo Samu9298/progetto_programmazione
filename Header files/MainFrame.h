@@ -1,6 +1,6 @@
-
 #ifndef PROGETTO_PROGRAMMAZIONE_MAINFRAME_H
 #define PROGETTO_PROGRAMMAZIONE_MAINFRAME_H
+
 #include <wx/wx.h>
 #include "../Header files/Constants.h"
 

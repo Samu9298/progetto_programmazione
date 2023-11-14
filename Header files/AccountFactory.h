@@ -1,7 +1,6 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_ACCOUNTFACTORY_H
 #define PROGETTO_PROGRAMMAZIONE_ACCOUNTFACTORY_H
 
-
 class AccountFactory {
 public:
     AccountFactory() {};

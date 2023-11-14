@@ -1,5 +1,6 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_BANKOPERATION_H
 #define PROGETTO_PROGRAMMAZIONE_BANKOPERATION_H
+
 #include "wx/wx.h"
 
 class BankOperation {

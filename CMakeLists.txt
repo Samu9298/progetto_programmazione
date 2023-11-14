@@ -9,6 +9,14 @@ set(SOURCE_FILE "Header files/Operation.h" "Source files/MyApp.cpp" "Header file
         "Header files/Account.h"
         "Source files/AccountFactory.cpp"
         "Header files/AccountFactory.h"
+        "Header files/Model.h"
+        "Header files/View.h"
+        "Source files/AccountCollection.cpp"
+        "Header files/AccountCollection.h"
+        "Source files/AccountView.cpp"
+        "Header files/AccountView.h"
+        "Source files/Controller.cpp"
+        "Header files/Controller.h"
 )
 
 find_package(wxWidgets REQUIRED COMPONENTS net core base)
