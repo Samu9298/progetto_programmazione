@@ -3,6 +3,9 @@
 
 #include <wx/wx.h>
 #include "MainFrame.h"
+#include "AccountView.h"
+#include "AccountCollection.h"
+#include "Controller.h"
 
 class MyApp: public wxApp {
 public:

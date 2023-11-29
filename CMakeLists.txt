@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(Progetto_programmazione)
 
 set(CMAKE_CXX_STANDARD 14)
-set(SOURCE_FILE "Header files/Operation.h" "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/MainFrame.cpp" "Header files/MainFrame.h" "Header files/Constants.h"
+set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/MainFrame.cpp" "Header files/MainFrame.h" "Header files/Constants.h"
         "Source files/BankOperation.cpp"
         "Header files/BankOperation.h"
         "Source files/Account.cpp"
@@ -17,6 +17,8 @@ set(SOURCE_FILE "Header files/Operation.h" "Source files/MyApp.cpp" "Header file
         "Header files/AccountView.h"
         "Source files/Controller.cpp"
         "Header files/Controller.h"
+        "Source files/OperationDialog.cpp"
+        "Header files/OperationDialog.h"
 )
 
 find_package(wxWidgets REQUIRED COMPONENTS net core base)

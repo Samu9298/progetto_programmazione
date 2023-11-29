@@ -5,6 +5,8 @@
 
 class Model {
 public:
+    Model() {};
+
     virtual ~Model() {};
     virtual void notify() = 0;
     virtual void registerModelObserver(View *view) = 0;

@@ -3,12 +3,13 @@
 
 class AccountFactory {
 public:
-    AccountFactory() {};
     AccountFactory(AccountFactory& obj) = delete;
     static AccountFactory *getInstance();
 
 private:
     static AccountFactory *instance;
+
+    AccountFactory() {};
 };
 
 

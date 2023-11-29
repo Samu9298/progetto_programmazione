@@ -6,6 +6,6 @@ bool MyApp::OnInit() {
     this->mainFrame = new MainFrame(APP_NAME);
     mainFrame->Show(true);
     SetTopWindow(this->mainFrame);
-    AccountFactory *accountFactory = nullptr;
+
     return true;
 }
