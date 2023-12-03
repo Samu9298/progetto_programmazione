@@ -4,7 +4,6 @@ AccountView::AccountView(Model *model, Controller *controller, wxFrame *parent, 
                          const wxPoint& pos, const wxSize& size) : wxFrame(parent, wxID_ANY, title, pos, size) {
     this->model = model;
     this->model->registerModelObserver(this);
-    this->controller = controller;
 
     auto *menuBar = new wxMenuBar();
     auto *operationMenu = new wxMenu();
@@ -49,7 +48,8 @@ void AccountView::populateListView() {
 }
 
 void AccountView::onNewClicked(wxCommandEvent &event) {
-    OperationDialog *operationDialog = new OperationDialog(this, wxID_ANY, OPERATION_DIALOG_NAME);
+    OperationDialog *operationDialog = new OperationDialog(this, wxID_ANY, OPERATION_DIALOG_NAME,
+                                                           wxDefaultPosition,OPERATION_DIALOG_SIZE);
     operationDialog->ShowModal();
     operationDialog->Destroy();
 }

@@ -10,9 +10,13 @@ public:
 
     void addOperation(BankOperation *operation);
     void removeOperation(BankOperation *operation);
+
+    const wxString &getLabel() const;
+
 private:
     wxString label;
     std::list<BankOperation *> operationList;
+    float amount = 0;
 };
 
 

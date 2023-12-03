@@ -9,19 +9,24 @@
 
 class AccountCollection : public Model {
 public:
-    AccountCollection();
+    AccountCollection(AccountCollection &obj) = delete;
+    static AccountCollection *getInstance();
 
     void notify() override;
 
     void registerModelObserver(View *view) override;
     void removeModelObserver(View *view) override;
-    //void addAccount(Account *account);
-    //void removeAccount(Account *account);
+    void addAccount(Account *account);
+    void removeAccount(const wxString &label);
+
     const std::map<wxString, Account *> &getAccountList() const;
 
 private:
+    static AccountCollection *instance;
     std::list<View *> observerList;
     std::map<wxString, Account*> accountList;
+
+    AccountCollection() {};
 };
 
 

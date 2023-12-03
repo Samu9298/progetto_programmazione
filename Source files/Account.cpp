@@ -10,4 +10,9 @@ void Account::removeOperation(BankOperation *operation) {
 
 Account::Account(const wxString &label) {
     this->label = label;
+    this->operationList = std::list<BankOperation*>();
+}
+
+const wxString &Account::getLabel() const {
+    return label;
 }

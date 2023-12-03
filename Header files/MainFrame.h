@@ -7,6 +7,8 @@
 #include "Controller.h"
 #include "AccountCollection.h"
 #include "AccountView.h"
+#include "AccountDialog.h"
+#include "DeleteAccountDialog.h"
 
 class MainFrame: public wxFrame {
 public:
@@ -19,6 +21,8 @@ private:
     wxChoice *labelChoice;
 
     void onListButtonClicked(wxCommandEvent& event);
+    void onNewAccountClicked(wxCommandEvent& event);
+    void onDeleteAccountClicked(wxCommandEvent& event);
 };
 
 

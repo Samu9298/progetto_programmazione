@@ -1,8 +1,24 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_CONTROLLER_H
 #define PROGETTO_PROGRAMMAZIONE_CONTROLLER_H
 
-class Controller {
+#include "wx/wx.h"
+#include "AccountFactory.h"
+#include "AccountCollection.h"
 
+class Controller {
+public:
+    Controller(Controller& obj) = delete;
+    static Controller *getInstance();
+
+    virtual ~Controller();
+
+    void createAccount(const wxString &label);
+    void deleteAccount(const wxString &label);
+
+private:
+    static Controller *instance;
+
+    Controller() {};
 };
 
 
