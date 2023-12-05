@@ -10,7 +10,7 @@ public:
 
     virtual ~AccountFactory();
 
-    Account* createAccount(const wxString &label);
+    Account* createAccount(const wxString &label, const wxString &amount);
 
 private:
     static AccountFactory *instance;

@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "BankOperation.h"
 #include "Account.h"
+#include "Constants.h"
 
 class AccountCollection : public Model {
 public:

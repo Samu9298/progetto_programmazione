@@ -11,7 +11,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                                                wxDefaultPosition,LOGO_SIZE);
     mainSizer->Add(image, 0, wxALIGN_CENTER);
 
-    wxArrayString choices;
     for (const auto &iterator: AccountCollection::getInstance()->getAccountList()) {
         choices.push_back(iterator.first);
     }
@@ -29,6 +28,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                                                  MAIN_BUTTON_SIZE);
     mainSizer->Add(createAccountButton, 0, wxALIGN_CENTER);
     Bind(wxEVT_BUTTON, &MainFrame::onNewAccountClicked, this, createAccountButton->GetId());
+
+    labelChoice->Layout();
 
     wxButton *deleteAccountButton = new wxButton(this, wxID_ANY, DELETE_ACCOUNT, wxDefaultPosition,
                                                  MAIN_BUTTON_SIZE);
@@ -53,11 +54,22 @@ void MainFrame::onNewAccountClicked(wxCommandEvent &event) {
                                                      ACCOUNT_DIALOG_SIZE);
     accountDialog->ShowModal();
     accountDialog->Destroy();
+
+    updateChoice();
 }
 
 void MainFrame::onDeleteAccountClicked(wxCommandEvent &event) {
     DeleteAccountDialog *accountDialog = new DeleteAccountDialog(this, wxID_ANY, ACCOUNT,
-                                                                 wxDefaultPosition, ACCOUNT_DIALOG_SIZE);
+                                                                 wxDefaultPosition, DELETE_ACCOUNT_DIALOG_SIZE);
     accountDialog->ShowModal();
     accountDialog->Destroy();
+
+    updateChoice();
+}
+
+void MainFrame::updateChoice() {
+    labelChoice->Clear();
+    for (const auto &iterator: AccountCollection::getInstance()->getAccountList()) {
+        labelChoice->Append(iterator.first);
+    }
 }

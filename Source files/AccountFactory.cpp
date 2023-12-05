@@ -8,8 +8,8 @@ AccountFactory *AccountFactory::getInstance() {
     return instance;
 }
 
-Account *AccountFactory::createAccount(const wxString &label) {
-    Account *newAccount = new Account(label);
+Account *AccountFactory::createAccount(const wxString &label, const wxString &amount) {
+    Account *newAccount = new Account(label, amount);
     return newAccount;
 }
 

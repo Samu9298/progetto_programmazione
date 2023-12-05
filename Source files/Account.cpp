@@ -8,8 +8,9 @@ void Account::removeOperation(BankOperation *operation) {
     this->operationList.remove(operation);
 }
 
-Account::Account(const wxString &label) {
+Account::Account(const wxString &label, const wxString &amount) {
     this->label = label;
+    this->amount = amount;
     this->operationList = std::list<BankOperation*>();
 }
 

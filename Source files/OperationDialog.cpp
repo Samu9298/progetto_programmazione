@@ -10,7 +10,7 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
         choices.push_back(iterator);
     }
     wxBoxSizer *labelSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText *labelText = new wxStaticText(this, wxID_ANY, "Label");
+    wxStaticText *labelText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_LABEL);
     labelSizer->Add(labelText, 0, wxRIGHT, DIALOG_BORDER);
     labelChoice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
     labelSizer->Add(labelChoice, 1);
@@ -19,7 +19,7 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
 
     //amount
     wxBoxSizer *amountSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText *amountText = new wxStaticText(this, wxID_ANY, "Amount");
+    wxStaticText *amountText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_AMOUNT);
     amountText->SetMinSize(wxSize(amountText->GetMinSize().x, amountText->GetMinSize().y));
     amountSizer->Add(amountText, 0, wxRIGHT, DIALOG_BORDER);
 
@@ -30,7 +30,7 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
 
     //date
     wxBoxSizer *dateSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText *dateText = new wxStaticText(this, wxID_ANY, "Date");
+    wxStaticText *dateText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_DATE);
     dateText->SetMinSize(wxSize(dateText->GetMinSize().x, dateText->GetMinSize().y));
     dateSizer->Add(dateText, 0, wxRIGHT, DIALOG_BORDER);
 
@@ -41,7 +41,7 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
 
     //hour
     wxBoxSizer *hourSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText *hourText = new wxStaticText(this, wxID_ANY, "Hour");
+    wxStaticText *hourText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_HOUR);
     hourText->SetMinSize(wxSize(hourText->GetMinSize().x, hourText->GetMinSize().y));
     hourSizer->Add(hourText, 0, wxRIGHT, DIALOG_BORDER);
 

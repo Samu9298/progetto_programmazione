@@ -4,6 +4,7 @@
 #include "wx/wx.h"
 #include "AccountCollection.h"
 #include "Constants.h"
+#include "Controller.h"
 
 class DeleteAccountDialog: public wxDialog {
 public:
@@ -13,6 +14,9 @@ public:
     ~DeleteAccountDialog() override;
 
 private:
+    wxChoice *labelChoice;
+
+    void onOkButtonClicked(wxCommandEvent &event);
 };
 
 

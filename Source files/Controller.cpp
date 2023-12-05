@@ -8,8 +8,8 @@ Controller *Controller::getInstance() {
     return instance;
 }
 
-void Controller::createAccount(const wxString &label) {
-    Account *newAccount = AccountFactory::getInstance()->createAccount(label);
+void Controller::createAccount(const wxString &label, const wxString &amount) {
+    Account *newAccount = AccountFactory::getInstance()->createAccount(label, amount);
     AccountCollection::getInstance()->addAccount(newAccount);
 }
 

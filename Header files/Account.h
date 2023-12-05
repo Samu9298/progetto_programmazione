@@ -6,7 +6,7 @@
 
 class Account {
 public:
-    explicit Account(const wxString &label);
+    explicit Account(const wxString &label, const wxString &amount);
 
     void addOperation(BankOperation *operation);
     void removeOperation(BankOperation *operation);
@@ -15,8 +15,8 @@ public:
 
 private:
     wxString label;
+    wxString amount;
     std::list<BankOperation *> operationList;
-    float amount = 0;
 };
 
 

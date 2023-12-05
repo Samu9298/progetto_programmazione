@@ -12,7 +12,7 @@ public:
 
     virtual ~Controller();
 
-    void createAccount(const wxString &label);
+    void createAccount(const wxString &label, const wxString &amount);
     void deleteAccount(const wxString &label);
 
 private:

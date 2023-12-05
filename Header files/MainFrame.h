@@ -19,10 +19,12 @@ private:
     AccountCollection *accountCollection;
     AccountView *accountView;
     wxChoice *labelChoice;
+    wxArrayString choices;
 
     void onListButtonClicked(wxCommandEvent& event);
     void onNewAccountClicked(wxCommandEvent& event);
     void onDeleteAccountClicked(wxCommandEvent& event);
+    void updateChoice();
 };
 
 

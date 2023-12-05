@@ -38,7 +38,8 @@ const std::map<wxString, Account *> &AccountCollection::getAccountList() const {
 }
 
 void AccountCollection::addAccount(Account *account) {
-    this->accountList.insert({account->getLabel(), account});
+    //this->accountList.insert({account->getLabel(), account});
+    this->accountList.emplace(account->getLabel(), account);
 }
 
 void AccountCollection::removeAccount(const wxString &label) {
