@@ -5,14 +5,24 @@
 
 class BankOperation {
 public:
-    BankOperation(wxString label, float amount, wxString date, wxString hour);
+    BankOperation(const wxString& label, const wxString& amount, const wxString& date, const wxString& hour);
     virtual ~BankOperation();
 
+    const wxString &getLabel() const;
+
+    const wxString &getAmount() const;
+
+    const wxString &getDate() const;
+
+    const wxString &getHour() const;
+
+    bool operator==(const BankOperation &rhs) const;
+
 private:
-    static wxString label;
-    static float amount;
-    static wxString date;
-    static wxString hour;
+    wxString label;
+    wxString amount;
+    wxString date;
+    wxString hour;
 };
 
 

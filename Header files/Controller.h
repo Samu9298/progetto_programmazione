@@ -15,6 +15,10 @@ public:
     void createAccount(const wxString &label, const wxString &amount);
     void deleteAccount(const wxString &label);
 
+    void createOperation(const wxString& accountTarget, const wxString& label, const wxString& amount, const wxString& date,
+                         const wxString& hour);
+    void deleteOperation(const wxString &accountTarget, const wxString &label);
+
 private:
     static Controller *instance;
 

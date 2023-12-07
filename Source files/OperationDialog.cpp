@@ -1,8 +1,9 @@
 #include "../Header files/OperationDialog.h"
 
 OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &pos,
-                                 const wxSize &size) :
+                                 const wxSize &size, const wxString& accountTarget) :
                                  wxDialog(parent, id, title, pos, size) {
+    this->accountTarget = accountTarget;
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
     //label
@@ -50,8 +51,9 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
 
     mainSizer->Add(hourSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
 
-    wxSizer *buttonSizer = CreateButtonSizer(wxOK | wxCANCEL);
-    mainSizer->Add(buttonSizer, 0, wxALIGN_RIGHT | wxTOP | wxBOTTOM, DIALOG_BORDER);
+    wxButton *okButton = new wxButton(this, wxID_ANY, OPERATION_DIALOG_OK);
+    mainSizer->Add(okButton, 0, wxALIGN_RIGHT | wxTOP | wxBOTTOM | wxRIGHT, DIALOG_BORDER);
+    Bind(wxEVT_BUTTON, &OperationDialog::onOkButtonClicked, this, okButton->GetId());
 
     SetSizer(mainSizer);
     SetSize(OPERATION_DIALOG_SIZE);
@@ -71,4 +73,21 @@ const wxString OperationDialog::getDate() const {
 
 const wxString OperationDialog::getHour() const {
     return hour;
+}
+
+void OperationDialog::onOkButtonClicked(wxCommandEvent &event) {
+    if(!amountBox->GetValue().empty() && !dateBox->GetValue().empty() && !hourBox->GetValue().empty()) {
+        int selection = labelChoice->GetSelection();
+        wxString selectedLabel = labelChoice->GetString(selection);
+        if(!selectedLabel.empty()) {
+            Controller::getInstance()->createOperation(this->accountTarget, selectedLabel,
+                                                       amountBox->GetValue(), dateBox->GetValue(),
+                                                       hourBox->GetValue());
+        }
+    } else {
+        wxMessageBox(OPERATION_ERROR);
+    }
+    amountBox->Clear();
+    dateBox->Clear();
+    hourBox->Clear();
 }

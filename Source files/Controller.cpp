@@ -21,4 +21,20 @@ Controller::~Controller() {
 
 }
 
+void Controller::createOperation(const wxString &accountTarget, const wxString &label, const wxString &amount,
+                                 const wxString &date, const wxString &hour) {
+    BankOperation *newOperation = new BankOperation(label, amount, date, hour);
+    AccountCollection::getInstance()->createOperation(accountTarget, newOperation);
+}
+
+void Controller::deleteOperation(const wxString &accountTarget, const wxString &label) {
+    BankOperation* elementToDelete;
+    for(auto iterator : AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()) {
+        if(iterator->getLabel() == label){
+            elementToDelete = &(*iterator);
+        }
+    }
+    AccountCollection::getInstance()->deleteOperation(accountTarget, elementToDelete);
+}
+
 

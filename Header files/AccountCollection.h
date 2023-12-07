@@ -19,6 +19,8 @@ public:
     void removeModelObserver(View *view) override;
     void addAccount(Account *account);
     void removeAccount(const wxString &label);
+    void createOperation(const wxString &accountTarget, BankOperation *operation);
+    void deleteOperation(const wxString &accountTarget, BankOperation *operation);
 
     const std::map<wxString, Account *> &getAccountList() const;
 

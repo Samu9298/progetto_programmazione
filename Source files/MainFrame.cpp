@@ -29,8 +29,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     mainSizer->Add(createAccountButton, 0, wxALIGN_CENTER);
     Bind(wxEVT_BUTTON, &MainFrame::onNewAccountClicked, this, createAccountButton->GetId());
 
-    labelChoice->Layout();
-
     wxButton *deleteAccountButton = new wxButton(this, wxID_ANY, DELETE_ACCOUNT, wxDefaultPosition,
                                                  MAIN_BUTTON_SIZE);
     mainSizer->Add(deleteAccountButton, 0, wxALIGN_CENTER);
@@ -42,11 +40,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 void MainFrame::onListButtonClicked(wxCommandEvent &event) {
     int selection = labelChoice->GetSelection();
     wxString selectedAccount = labelChoice->GetString(selection);
-    auto accountList = accountCollection->getAccountList();
+    auto accountList = AccountCollection::getInstance()->getAccountList();
     if (typeid(accountList.at(selectedAccount)) == typeid(Account*)) {
-        this->accountView = new AccountView(accountCollection, controller, this, ACCOUNT_VIEW);
-        accountView->update();
+        accountView = new AccountView(this, ACCOUNT_VIEW, selectedAccount);
     }
+
+    accountView->Show(true);
 }
 
 void MainFrame::onNewAccountClicked(wxCommandEvent &event) {

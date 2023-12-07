@@ -23,6 +23,8 @@ set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/Ma
         "Header files/AccountDialog.h"
         "Source files/DeleteAccountDialog.cpp"
         "Header files/DeleteAccountDialog.h"
+        "Source files/DeleteOperationDialog.cpp"
+        "Header files/DeleteOperationDialog.h"
 )
 
 find_package(wxWidgets REQUIRED COMPONENTS net core base)

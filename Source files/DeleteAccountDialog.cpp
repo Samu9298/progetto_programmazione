@@ -9,7 +9,7 @@ DeleteAccountDialog::DeleteAccountDialog(wxWindow *parent, wxWindowID id, const 
     labelSizer->Add(labelText, 0, wxRIGHT, DIALOG_BORDER);
 
     wxArrayString choices;
-    for(auto iterator: AccountCollection::getInstance()->getAccountList()) {
+    for(const auto& iterator: AccountCollection::getInstance()->getAccountList()) {
         choices.push_back(iterator.first);
     }
     labelChoice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);

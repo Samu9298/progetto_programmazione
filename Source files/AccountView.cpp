@@ -1,55 +1,73 @@
 #include "../Header files/AccountView.h"
 
-AccountView::AccountView(Model *model, Controller *controller, wxFrame *parent, const wxString& title,
-                         const wxPoint& pos, const wxSize& size) : wxFrame(parent, wxID_ANY, title, pos, size) {
-    this->model = model;
-    this->model->registerModelObserver(this);
+AccountView::AccountView(wxFrame *parent, const wxString& title, const wxString& accountTarget, const wxPoint& pos,
+                         const wxSize& size): wxFrame(parent, wxID_ANY, title, pos, size) {
+    this->accountTarget = accountTarget;
+    AccountCollection::getInstance()->registerModelObserver(this);
 
     auto *menuBar = new wxMenuBar();
     auto *operationMenu = new wxMenu();
     auto *addItem = new wxMenuItem(operationMenu, wxID_NEW);
     auto *removeItem = new wxMenuItem(operationMenu, wxID_DELETE);
     operationMenu->Append(addItem);
-    Bind(wxEVT_MENU, &AccountView::onNewClicked, this, addItem->GetId());
     operationMenu->Append(removeItem);
+    Bind(wxEVT_MENU, &AccountView::onNewClicked, this, addItem->GetId());
+    Bind(wxEVT_MENU, &AccountView::onDeleteClicked, this, removeItem->GetId());
 
     menuBar->Append(operationMenu, OPERATION_MENU);
 
     auto *operationListPanel = new wxPanel(this);
     operationListView = new wxListView(operationListPanel);
-    //TODO: implement the costruction of the list: width of the column
+    createListView(accountTarget);
 
-    operationListView->AppendColumn("ID");
-    operationListView->AppendColumn("Name");
-
-
-    auto *operationListSizer = new wxBoxSizer(wxHORIZONTAL);
-    operationListSizer->Add(operationListView, 1,wxEXPAND);
+    auto *operationListSizer = new wxBoxSizer(wxVERTICAL);
+    operationListSizer->Add(operationListView, 1,wxALL | wxEXPAND, DIALOG_BORDER);
 
     operationListPanel->SetSizer(operationListSizer);
     SetMenuBar(menuBar);
 }
 
 AccountView::~AccountView() {
-    this->model->removeModelObserver(this);
+    AccountCollection::getInstance()->removeModelObserver(this);
 }
 
 void AccountView::update() {
-    populateListView();
-    this->Show(true);
-}
-
-void AccountView::populateListView() {
-    operationListView->InsertItem(0, "Prova 1");
-    operationListView->SetItem(0, 1, "Prova 1");
-
-    operationListView->InsertItem(1, "Prova 2");
-    operationListView->SetItem(1, 1, "Prova 2");
+    createListView(accountTarget);
 }
 
 void AccountView::onNewClicked(wxCommandEvent &event) {
     OperationDialog *operationDialog = new OperationDialog(this, wxID_ANY, OPERATION_DIALOG_NAME,
-                                                           wxDefaultPosition,OPERATION_DIALOG_SIZE);
+                                                           wxDefaultPosition, OPERATION_DIALOG_SIZE, accountTarget);
     operationDialog->ShowModal();
     operationDialog->Destroy();
+}
+
+void AccountView::onDeleteClicked(wxCommandEvent &event) {
+    DeleteOperationDialog *deleteOperationDialog = new DeleteOperationDialog(this, wxID_ANY, OPERATION_DIALOG_NAME,
+                                                                             wxDefaultPosition, DELETE_OPERATION_DIALOG_SIZE,
+                                                                             accountTarget);
+    deleteOperationDialog->ShowModal();
+    deleteOperationDialog->Destroy();
+}
+
+void AccountView::createListView(const wxString& account) {
+    operationListView->ClearAll();
+    int numberOfColumns = std::end(VIEW_COLUMN) - std::begin(VIEW_COLUMN);
+    int columnWidth = MAIN_SIZE.x / numberOfColumns;
+    for(int length = 0; length < numberOfColumns; length++) {
+        operationListView->AppendColumn(VIEW_COLUMN[length], wxLIST_FORMAT_CENTER, columnWidth);
+    }
+
+    populateListView(account);
+}
+
+void AccountView::populateListView(const wxString& account) {
+    int index = 0;
+    for (auto iterator : AccountCollection::getInstance()->getAccountList().at(account)->getOperationList()) {
+        int column = 1;
+        operationListView->InsertItem(index, iterator->getLabel());
+        operationListView->SetItem(index, column, iterator->getAmount());
+        operationListView->SetItem(index, ++column, iterator->getDate());
+        operationListView->SetItem(index, ++column, iterator->getHour());
+    }
 }

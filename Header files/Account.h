@@ -11,6 +11,7 @@ public:
     void addOperation(BankOperation *operation);
     void removeOperation(BankOperation *operation);
 
+    const std::list<BankOperation *> &getOperationList() const;
     const wxString &getLabel() const;
 
 private:
