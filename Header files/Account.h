@@ -14,6 +14,8 @@ public:
     const std::list<BankOperation *> &getOperationList() const;
     const wxString &getLabel() const;
 
+    const wxString &getAmount() const;
+
 private:
     wxString label;
     wxString amount;

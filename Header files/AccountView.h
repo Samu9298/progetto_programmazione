@@ -3,6 +3,8 @@
 
 #include <wx/wx.h>
 #include <wx/listctrl.h>
+#include <vector>
+#include <algorithm>
 #include <array>
 #include "View.h"
 #include "Model.h"
@@ -22,9 +24,14 @@ public:
 private:
     wxString accountTarget;
     wxListCtrl *operationListView;
+    wxStatusBar *statusBar;
+    wxChoice *labelFilterCtrl;
+    wxTextCtrl *amountFilterCtrl;
 
     void onNewClicked(wxCommandEvent &event);
     void onDeleteClicked(wxCommandEvent &event);
+    void onSearchClicked(wxCommandEvent &event);
+    void onRemoveFiltersClicked(wxCommandEvent &event);
     void createListView(const wxString& account);
     void populateListView(const wxString& account);
 };

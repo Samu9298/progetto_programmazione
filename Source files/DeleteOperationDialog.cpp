@@ -40,4 +40,5 @@ void DeleteOperationDialog::onOkButtonClicked(wxCommandEvent &event) {
     wxString splittedLabel = tokenizer->GetNextToken();
 
     Controller::getInstance()->deleteOperation(accountTarget, splittedLabel);
+    labelChoice->Delete(selection);
 }

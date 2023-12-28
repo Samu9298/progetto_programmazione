@@ -16,16 +16,49 @@ AccountView::AccountView(wxFrame *parent, const wxString& title, const wxString&
 
     menuBar->Append(operationMenu, OPERATION_MENU);
 
-    auto *operationListPanel = new wxPanel(this);
-    operationListView = new wxListView(operationListPanel);
+    auto *mainPanel = new wxPanel(this);
+    operationListView = new wxListView(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize);
     createListView(accountTarget);
 
-    auto *operationListSizer = new wxBoxSizer(wxVERTICAL);
-    operationListSizer->Add(operationListView, 1,wxALL | wxEXPAND, DIALOG_BORDER);
+    wxBoxSizer *filtersSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticText *labelFilter = new wxStaticText(mainPanel, wxID_ANY, ACCOUNT_VIEW_FILTER_LABEL);
+    wxArrayString choices;
+    for (const auto &iterator: OPERATION_LABEL) {
+        choices.push_back(iterator);
+    }
+    labelFilterCtrl = new wxChoice(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
 
-    operationListPanel->SetSizer(operationListSizer);
+    wxStaticText *amountFilter = new wxStaticText(mainPanel, wxID_ANY, ACCOUNT_VIEW_FILTER_AMOUNT);
+    amountFilterCtrl = new wxTextCtrl(mainPanel, wxID_ANY);
+
+    filtersSizer->Add(labelFilter,0, wxLEFT | wxTOP | wxALIGN_LEFT | wxALIGN_TOP, ACCOUNT_VIEW_BORDER);
+    filtersSizer->Add(labelFilterCtrl,0, wxLEFT | wxTOP | wxALIGN_LEFT | wxALIGN_TOP, ACCOUNT_VIEW_BORDER);
+    filtersSizer->Add(amountFilter,0, wxLEFT | wxTOP | wxALIGN_LEFT | wxALIGN_TOP, ACCOUNT_VIEW_BORDER);
+    filtersSizer->Add(amountFilterCtrl,0, wxLEFT | wxTOP | wxALIGN_LEFT | wxALIGN_TOP, ACCOUNT_VIEW_BORDER);
+
+    wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxButton *searchButton = new wxButton(mainPanel, wxID_ANY, ACCOUNT_VIEW_SEARCH);
+    Bind(wxEVT_BUTTON, &AccountView::onSearchClicked, this, searchButton->GetId());
+
+    wxButton *removeFilterButton = new wxButton(mainPanel, wxID_ANY, ACCOUNT_VIEW_REMOVE_FILTERS);
+    Bind(wxEVT_BUTTON, &AccountView::onRemoveFiltersClicked, this, removeFilterButton->GetId());
+
+    buttonSizer->Add(searchButton,1, wxLEFT | wxTOP, ACCOUNT_VIEW_BORDER);
+    buttonSizer->Add(removeFilterButton,1, wxLEFT | wxTOP, ACCOUNT_VIEW_BORDER);
+
+    auto *mainSizer = new wxBoxSizer(wxVERTICAL);
+    mainSizer->Add(filtersSizer, 0,  wxALIGN_LEFT | wxALIGN_TOP);
+    mainSizer->Add(buttonSizer, 0, wxALIGN_LEFT | wxALIGN_TOP);
+    mainSizer->Add(operationListView, 1, wxLEFT | wxTOP | wxEXPAND, ACCOUNT_VIEW_BORDER);
+
+    mainPanel->SetSizer(mainSizer);
     SetMenuBar(menuBar);
-}
+
+    statusBar = CreateStatusBar(ACCOUNT_VIEW_STATUS_BAR_SIZE);
+    statusBar->SetStatusText(ACCOUNT_VIEW_AMOUNT);
+    statusBar->SetStatusText(AccountCollection::getInstance()->getAccountList().at(accountTarget)->getAmount(), 1);
+
+ }
 
 AccountView::~AccountView() {
     AccountCollection::getInstance()->removeModelObserver(this);
@@ -33,6 +66,7 @@ AccountView::~AccountView() {
 
 void AccountView::update() {
     createListView(accountTarget);
+    statusBar->SetStatusText(AccountCollection::getInstance()->getAccountList().at(accountTarget)->getAmount(), 1);
 }
 
 void AccountView::onNewClicked(wxCommandEvent &event) {
@@ -44,10 +78,32 @@ void AccountView::onNewClicked(wxCommandEvent &event) {
 
 void AccountView::onDeleteClicked(wxCommandEvent &event) {
     DeleteOperationDialog *deleteOperationDialog = new DeleteOperationDialog(this, wxID_ANY, OPERATION_DIALOG_NAME,
-                                                                             wxDefaultPosition, DELETE_OPERATION_DIALOG_SIZE,
+                                                                             wxDefaultPosition, OPERATION_DIALOG_SIZE,
                                                                              accountTarget);
     deleteOperationDialog->ShowModal();
     deleteOperationDialog->Destroy();
+}
+
+void AccountView::onSearchClicked(wxCommandEvent &event) {
+    int selection = labelFilterCtrl->GetSelection();
+    wxString labelToFind = labelFilterCtrl->GetString(selection);
+    wxString amountToFind = amountFilterCtrl->GetValue();
+
+    for (int i = 0; i < operationListView->GetItemCount(); i++) {
+        wxString viewLabel = operationListView->GetItemText(i, 0);
+        wxString viewAmount = operationListView->GetItemText( i, 1);
+
+        if (!labelToFind.empty() && !(viewLabel == labelToFind) || !amountToFind.empty() && !(viewAmount == amountToFind)) {
+                operationListView->DeleteItem(i);
+                i--;
+        }
+    }
+}
+
+void AccountView::onRemoveFiltersClicked(wxCommandEvent &event) {
+    amountFilterCtrl->Clear();
+
+    createListView(accountTarget);
 }
 
 void AccountView::createListView(const wxString& account) {
