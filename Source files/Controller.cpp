@@ -1,16 +1,16 @@
 #include "../Header files/Controller.h"
 
-Controller* Controller::instance = nullptr;
+std::shared_ptr<Controller> Controller::instance = nullptr;
 
-Controller *Controller::getInstance() {
+std::shared_ptr<Controller> Controller::getInstance() {
     if (instance == nullptr)
-        instance = new Controller();
+        instance = std::shared_ptr<Controller>(new Controller);
     return instance;
 }
 
-void Controller::createAccount(const wxString &label, const wxString &amount) {
-    Account *newAccount = AccountFactory::getInstance()->createAccount(label, amount);
-    AccountCollection::getInstance()->addAccount(newAccount);
+void Controller::createAccount(AccountType type, const wxString &label, const wxString &amount) {
+    std::unique_ptr<Account> newAccount = AccountFactory::getInstance()->createAccount(type, label, amount);
+    AccountCollection::getInstance()->addAccount(std::move(newAccount));
 }
 
 void Controller::deleteAccount(const wxString &label) {
@@ -22,19 +22,13 @@ Controller::~Controller() {
 }
 
 void Controller::createOperation(const wxString &accountTarget, const wxString &label, const wxString &amount,
-                                 const wxString &date, const wxString &hour) {
-    BankOperation *newOperation = new BankOperation(label, amount, date, hour);
-    AccountCollection::getInstance()->createOperation(accountTarget, newOperation);
+                                 const wxDateTime &date, const wxDateTime &time) {
+    std::unique_ptr<BankOperation> newOperation = std::move(OperationFactory::getInstance()->createOperation(label, amount, date, time));
+    AccountCollection::getInstance()->createOperation(accountTarget, std::move(newOperation));
 }
 
-void Controller::deleteOperation(const wxString &accountTarget, const wxString &label) {
-    BankOperation* elementToDelete;
-    for(auto iterator : AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()) {
-        if(iterator->getLabel() == label){
-            elementToDelete = &(*iterator);
-        }
-    }
-    AccountCollection::getInstance()->deleteOperation(accountTarget, elementToDelete);
+void Controller::deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation) {
+    AccountCollection::getInstance()->deleteOperation(accountTarget, std::move(operation));
 }
 
 

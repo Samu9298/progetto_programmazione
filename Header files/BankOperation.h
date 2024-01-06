@@ -1,28 +1,31 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_BANKOPERATION_H
 #define PROGETTO_PROGRAMMAZIONE_BANKOPERATION_H
 
-#include "wx/wx.h"
+#include <wx/wx.h>
 
 class BankOperation {
 public:
-    BankOperation(const wxString& label, const wxString& amount, const wxString& date, const wxString& hour);
+    BankOperation(const wxString& label, const bool& isIncome, const float& amount, const wxDateTime& date, const wxDateTime& hour);
     virtual ~BankOperation();
 
     const wxString &getLabel() const;
 
-    const wxString &getAmount() const;
+    float getAmount() const;
 
-    const wxString &getDate() const;
+    bool getIsIncome() const;
 
-    const wxString &getHour() const;
+    const wxDateTime &getDate() const;
+
+    const wxDateTime &getTime() const;
 
     bool operator==(const BankOperation &rhs) const;
 
 private:
     wxString label;
-    wxString amount;
-    wxString date;
-    wxString hour;
+    bool isIncome;
+    float amount;
+    wxDateTime date;
+    wxDateTime hour;
 };
 
 

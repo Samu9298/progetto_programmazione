@@ -2,6 +2,8 @@
 #define PROGETTO_PROGRAMMAZIONE_OPERATIONDIALOG_H
 
 #include <wx/wx.h>
+#include <wx/datectrl.h>
+#include <wx/timectrl.h>
 #include "Constants.h"
 #include "Controller.h"
 
@@ -12,25 +14,13 @@ public:
 
     virtual ~OperationDialog() {};
 
-    const wxString getLabel() const;
-
-    float getAmount() const;
-
-    const wxString getDate() const;
-
-    const wxString getHour() const;
-
 private:
-    wxString label = "Empty";
-    float amount = 0.00;
-    wxString date = "Empty";
-    wxString hour = "Empty";
     wxString accountTarget;
     wxArrayString choices;
     wxChoice *labelChoice = nullptr;
     wxTextCtrl *amountBox = nullptr;
-    wxTextCtrl *dateBox = nullptr;
-    wxTextCtrl *hourBox = nullptr;
+    wxDatePickerCtrl *datePicker = nullptr;
+    wxTimePickerCtrl *timePicker = nullptr;
 
     void onOkButtonClicked(wxCommandEvent &event);
 };

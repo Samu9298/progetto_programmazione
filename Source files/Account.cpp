@@ -1,47 +1,28 @@
 #include "../Header files/Account.h"
 
-Account::Account(const wxString &label, const wxString &amount) {
+Account::Account(const wxString &label, const float &amount, AccountType type) : operationList() {
     this->label = label;
     this->amount = amount;
-    this->operationList = std::list<BankOperation*>();
-}
-
-void Account::addOperation(BankOperation *operation) {
-    this->operationList.push_back(operation);
-
-    double amountNumber;
-    double operationAmountNumber;
-    if(amount.ToDouble(&amountNumber)) {
-        if(operation->getAmount().ToDouble(&operationAmountNumber)) {
-            float newAmount = (float)(amountNumber - operationAmountNumber);
-            amount.Clear();
-            amount = wxString::Format(wxT("%.2f"), newAmount);
-        }
-    }
-}
-
-void Account::removeOperation(BankOperation *operation) {
-    this->operationList.remove(operation);
-
-    double amountNumber;
-    double operationAmountNumber;
-    if(amount.ToDouble(&amountNumber)) {
-        if(operation->getAmount().ToDouble(&operationAmountNumber)) {
-            float newAmount = (float)(amountNumber + operationAmountNumber);
-            amount.Clear();
-            amount = wxString::Format(wxT("%.2f"), newAmount);
-        }
-    }
+    this->type = type;
 }
 
 const wxString &Account::getLabel() const {
     return label;
 }
 
-const std::list<BankOperation *> &Account::getOperationList() const {
+const std::list<std::unique_ptr<BankOperation>> &Account::getOperationList() const {
     return operationList;
 }
 
-const wxString &Account::getAmount() const {
+const float &Account::getAmount() const {
     return amount;
 }
+
+Account::~Account() {
+
+}
+
+AccountType Account::getType() const {
+    return type;
+}
+

@@ -1,16 +1,27 @@
+#include <memory>
+
 #include "../Header files/AccountFactory.h"
 
-AccountFactory* AccountFactory::instance = nullptr;
+std::shared_ptr<AccountFactory> AccountFactory::instance = nullptr;
 
-AccountFactory *AccountFactory::getInstance() {
+std::shared_ptr<AccountFactory> AccountFactory::getInstance() {
     if (instance == nullptr)
-        instance = new AccountFactory();
+        instance = std::shared_ptr<AccountFactory>(new AccountFactory());
     return instance;
 }
 
-Account *AccountFactory::createAccount(const wxString &label, const wxString &amount) {
-    Account *newAccount = new Account(label, amount);
-    return newAccount;
+std::unique_ptr<Account> AccountFactory::createAccount(AccountType type, const wxString &label, const wxString &amount) {
+    double amountNumber;
+    amount.ToDouble(&amountNumber);
+
+    switch (type) {
+        case Bank:
+            return std::make_unique<BankAccount>(label, (float)amountNumber);
+        case Saving:
+            return std::make_unique<SavingAccount>(label, (float)amountNumber);
+        default:
+            return nullptr;
+    }
 }
 
 AccountFactory::~AccountFactory() {

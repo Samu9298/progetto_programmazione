@@ -1,11 +1,12 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_DELETEOPERATIONDIALOG_H
 #define PROGETTO_PROGRAMMAZIONE_DELETEOPERATIONDIALOG_H
 
-#include "wx/wx.h"
-#include "wx/tokenzr.h"
+#include <wx/wx.h>
+#include <wx/tokenzr.h>
 #include "Constants.h"
 #include "AccountCollection.h"
 #include "Controller.h"
+#include "OperationFactory.h"
 
 class DeleteOperationDialog : public wxDialog{
 public:

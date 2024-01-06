@@ -3,7 +3,7 @@
 
 #include <wx/wx.h>
 #include "MainFrame.h"
-#include "AccountView.h"
+#include "BankAccountView.h"
 #include "AccountCollection.h"
 #include "Controller.h"
 

@@ -1,19 +1,21 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_ACCOUNTFACTORY_H
 #define PROGETTO_PROGRAMMAZIONE_ACCOUNTFACTORY_H
 
-#include "Account.h"
+#include "BankAccount.h"
+#include "Constants.h"
+#include "SavingAccount.h"
 
 class AccountFactory {
 public:
     AccountFactory(AccountFactory& obj) = delete;
-    static AccountFactory *getInstance();
+    static std::shared_ptr<AccountFactory> getInstance();
 
     virtual ~AccountFactory();
 
-    Account* createAccount(const wxString &label, const wxString &amount);
+    std::unique_ptr<Account> createAccount(AccountType type, const wxString &label, const wxString &amount);
 
 private:
-    static AccountFactory *instance;
+    static std::shared_ptr<AccountFactory> instance;
 
     AccountFactory() {};
 };

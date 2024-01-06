@@ -1,25 +1,35 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_ACCOUNT_H
 #define PROGETTO_PROGRAMMAZIONE_ACCOUNT_H
 
+#include <wx/wx.h>
 #include <list>
+#include <memory>
+#include <algorithm>
 #include "BankOperation.h"
+#include "Account.h"
+#include "Constants.h"
 
 class Account {
+
 public:
-    explicit Account(const wxString &label, const wxString &amount);
+    explicit Account(const wxString &label, const float &amount, AccountType type);
 
-    void addOperation(BankOperation *operation);
-    void removeOperation(BankOperation *operation);
+    virtual ~Account();
 
-    const std::list<BankOperation *> &getOperationList() const;
+    virtual void addOperation(std::unique_ptr<BankOperation> operation) = 0;
+    virtual void removeOperation(std::unique_ptr<BankOperation> operation) = 0;
+
+    const std::list<std::unique_ptr<BankOperation>> &getOperationList() const;
     const wxString &getLabel() const;
+    const float &getAmount() const;
 
-    const wxString &getAmount() const;
+    AccountType getType() const;
 
-private:
+protected:
+    AccountType type;
     wxString label;
-    wxString amount;
-    std::list<BankOperation *> operationList;
+    float amount;
+    std::list<std::unique_ptr<BankOperation>> operationList;
 };
 
 

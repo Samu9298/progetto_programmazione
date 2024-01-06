@@ -7,8 +7,8 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
     //label
-    for (const auto &iterator: OPERATION_LABEL) {
-        choices.push_back(iterator);
+    for(const auto& iterator: OPERATION_LABELS) {
+        choices.push_back(iterator.first);
     }
     wxBoxSizer *labelSizer = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText *labelText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_LABEL);
@@ -19,6 +19,7 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     mainSizer->Add(labelSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
 
     //amount
+    //TODO: aggiungi validator per far inserire solo numeri e punto
     wxBoxSizer *amountSizer = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText *amountText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_AMOUNT);
     amountText->SetMinSize(wxSize(amountText->GetMinSize().x, amountText->GetMinSize().y));
@@ -35,21 +36,21 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     dateText->SetMinSize(wxSize(dateText->GetMinSize().x, dateText->GetMinSize().y));
     dateSizer->Add(dateText, 0, wxRIGHT, DIALOG_BORDER);
 
-    dateBox = new wxTextCtrl(this, wxID_ANY);
-    dateSizer->Add(dateBox, 1);
+    datePicker = new wxDatePickerCtrl(this, wxID_ANY);
+    dateSizer->Add(datePicker, 1);
 
     mainSizer->Add(dateSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
 
     //hour
-    wxBoxSizer *hourSizer = new wxBoxSizer(wxHORIZONTAL);
-    wxStaticText *hourText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_HOUR);
-    hourText->SetMinSize(wxSize(hourText->GetMinSize().x, hourText->GetMinSize().y));
-    hourSizer->Add(hourText, 0, wxRIGHT, DIALOG_BORDER);
+    wxBoxSizer *timeSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticText *timeText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_HOUR);
+    timeText->SetMinSize(wxSize(timeText->GetMinSize().x, timeText->GetMinSize().y));
+    timeSizer->Add(timeText, 0, wxRIGHT, DIALOG_BORDER);
 
-    hourBox = new wxTextCtrl(this, wxID_ANY);
-    hourSizer->Add(hourBox, 1);
+    timePicker = new wxTimePickerCtrl(this, wxID_ANY);
+    timeSizer->Add(timePicker, 1);
 
-    mainSizer->Add(hourSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
+    mainSizer->Add(timeSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
 
     wxButton *okButton = new wxButton(this, wxID_ANY, OPERATION_DIALOG_OK);
     mainSizer->Add(okButton, 0, wxALIGN_RIGHT | wxTOP | wxBOTTOM | wxRIGHT, DIALOG_BORDER);
@@ -59,35 +60,17 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     SetSize(OPERATION_DIALOG_SIZE);
 }
 
-const wxString OperationDialog::getLabel() const {
-    return label;
-}
-
-float OperationDialog::getAmount() const {
-    return amount;
-}
-
-const wxString OperationDialog::getDate() const {
-    return date;
-}
-
-const wxString OperationDialog::getHour() const {
-    return hour;
-}
-
 void OperationDialog::onOkButtonClicked(wxCommandEvent &event) {
-    if(!amountBox->GetValue().empty() && !dateBox->GetValue().empty() && !hourBox->GetValue().empty()) {
+    if(!amountBox->GetValue().empty()) {
         int selection = labelChoice->GetSelection();
         wxString selectedLabel = labelChoice->GetString(selection);
         if(!selectedLabel.empty()) {
             Controller::getInstance()->createOperation(this->accountTarget, selectedLabel,
-                                                       amountBox->GetValue(), dateBox->GetValue(),
-                                                       hourBox->GetValue());
+                                                       amountBox->GetValue(), datePicker->GetValue(),
+                                                       timePicker->GetValue());
         }
     } else {
         wxMessageBox(OPERATION_ERROR);
     }
     amountBox->Clear();
-    dateBox->Clear();
-    hourBox->Clear();
 }

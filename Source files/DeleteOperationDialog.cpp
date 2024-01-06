@@ -11,8 +11,11 @@ DeleteOperationDialog::DeleteOperationDialog(wxWindow *parent, wxWindowID id, co
     labelSizer->Add(labelText, 0, wxRIGHT, DIALOG_BORDER);
 
     wxArrayString choices;
-    for(auto iterator: AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()){
-        wxString operation = iterator->getLabel() + SEPARATOR + iterator->getAmount() + SEPARATOR + iterator->getDate();
+    for(auto &iterator: AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()){
+        wxString amountString = wxString::Format(wxT("%.2f"), iterator->getAmount());
+        wxString dateString = iterator->getDate().FormatDate();
+        wxString timeString = iterator->getTime().FormatTime();
+        wxString operation = iterator->getLabel() + SEPARATOR + amountString + SEPARATOR + dateString + SEPARATOR + timeString;
         choices.push_back(operation);
     }
     labelChoice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
@@ -38,7 +41,16 @@ void DeleteOperationDialog::onOkButtonClicked(wxCommandEvent &event) {
 
     wxStringTokenizer *tokenizer = new wxStringTokenizer(selectedOperationLabel, ",");
     wxString splittedLabel = tokenizer->GetNextToken();
+    wxString splittedAmount = tokenizer->GetNextToken();
+    wxString splittedDate = tokenizer->GetNextToken();
+    wxString splittedTime = tokenizer->GetNextToken();
+    wxDateTime date;
+    date.ParseFormat(splittedDate, "%m/%d/%Y");
+    wxDateTime time;
+    time.ParseFormat(splittedTime, "%H:%M:%S");
 
-    Controller::getInstance()->deleteOperation(accountTarget, splittedLabel);
+    std::unique_ptr<BankOperation> operationToDelete = std::move(OperationFactory::getInstance()->createOperation(splittedLabel, splittedAmount, date, time));
+
+    Controller::getInstance()->deleteOperation(accountTarget, std::move(operationToDelete));
     labelChoice->Delete(selection);
 }

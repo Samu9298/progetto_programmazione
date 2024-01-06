@@ -40,9 +40,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 void MainFrame::onListButtonClicked(wxCommandEvent &event) {
     int selection = labelChoice->GetSelection();
     wxString selectedAccount = labelChoice->GetString(selection);
-    auto accountList = AccountCollection::getInstance()->getAccountList();
-    if (typeid(accountList.at(selectedAccount)) == typeid(Account*)) {
-        accountView = new AccountView(this, ACCOUNT_VIEW, selectedAccount);
+    auto& accountList = AccountCollection::getInstance()->getAccountList();
+    const std::type_info& typeInfo = typeid(*accountList.at(selectedAccount));
+    if (typeInfo == typeid(BankAccount)) {
+        accountView = new BankAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
+    }
+    if (typeInfo == typeid(SavingAccount)) {
+        accountView = new BankAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
     }
 
     accountView->Show(true);

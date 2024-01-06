@@ -14,12 +14,10 @@ public:
 
     virtual ~AccountDialog() {};
 private:
-    wxString label = "Empty";
-    wxString amount = "0.00";
-    wxTextCtrl *labelBox = nullptr;
-    wxTextCtrl *amountBox = nullptr;
+    wxTextCtrl *labelBox;
+    wxTextCtrl *amountBox;
+    wxChoice *typeChoice;
 
-    //bool TransferDataFromWindow() override;
     //void onUpdateOkButton(wxUpdateUIEvent& event);
     void onOkButtonClicked(wxCommandEvent& event);
 };

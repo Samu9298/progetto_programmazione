@@ -3,10 +3,11 @@
 
 #include <wx/wx.h>
 #include <typeinfo>
+#include <memory>
 #include "Constants.h"
 #include "Controller.h"
 #include "AccountCollection.h"
-#include "AccountView.h"
+#include "BankAccountView.h"
 #include "AccountDialog.h"
 #include "DeleteAccountDialog.h"
 
@@ -15,9 +16,7 @@ public:
     explicit MainFrame(const wxString& title, const wxPoint& pos = wxDefaultPosition, const wxSize& size = MAIN_SIZE);
 
 private:
-    Controller *controller;
-    AccountCollection *accountCollection;
-    AccountView *accountView;
+    BankAccountView *accountView;
     wxChoice *labelChoice;
     wxArrayString choices;
 

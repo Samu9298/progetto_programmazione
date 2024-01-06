@@ -1,15 +1,15 @@
 #include "../Header files/AccountCollection.h"
 
-AccountCollection* AccountCollection::instance = nullptr;
+std::shared_ptr<AccountCollection> AccountCollection::instance = nullptr;
 
-AccountCollection *AccountCollection::getInstance() {
+std::shared_ptr<AccountCollection> AccountCollection::getInstance() {
     if (instance == nullptr)
-        instance = new AccountCollection();
+        instance = std::move(std::shared_ptr<AccountCollection>(new AccountCollection()));
     return instance;
 }
 
 void AccountCollection::notify() {
-    for (auto observerIterator : observerList)
+    for (auto &observerIterator : observerList)
         observerIterator->update();
 }
 
@@ -21,25 +21,32 @@ void AccountCollection::removeModelObserver(View *view) {
     this->observerList.remove(view);
 }
 
-const std::map<wxString, Account *> &AccountCollection::getAccountList() const {
+const std::map<wxString, std::unique_ptr<Account>> &AccountCollection::getAccountList() const {
     return accountList;
 }
 
-void AccountCollection::addAccount(Account *account) {
-    this->accountList.emplace(account->getLabel(), account);
+void AccountCollection::addAccount(std::unique_ptr<Account> account) {
+    this->accountList.emplace(account->getLabel(), std::move(account));
 }
 
-void AccountCollection::removeAccount(const wxString &label) {
-    this->accountList.erase(label);
+void AccountCollection::removeAccount(const wxString& label) {
+    auto iterator = accountList.begin();
+    while (iterator != accountList.end()) {
+        if ((*iterator).first == label) {
+            accountList.erase(iterator);
+        } else {
+            ++iterator;
+        }
+    }
 }
 
-void AccountCollection::createOperation(const wxString &accountTarget, BankOperation *operation) {
-    accountList.at(accountTarget)->addOperation(operation);
+void AccountCollection::createOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation) {
+    accountList.at(accountTarget)->addOperation(std::move(operation));
     notify();
 }
 
-void AccountCollection::deleteOperation(const wxString &accountTarget, BankOperation *operation) {
-    accountList.at(accountTarget)->removeOperation(operation);
+void AccountCollection::deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation) {
+    accountList.at(accountTarget)->removeOperation(std::move(operation));
     notify();
 }
 
