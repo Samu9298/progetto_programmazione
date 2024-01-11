@@ -16,9 +16,9 @@ std::unique_ptr<Account> AccountFactory::createAccount(AccountType type, const w
 
     switch (type) {
         case Bank:
-            return std::make_unique<BankAccount>(label, (float)amountNumber);
+            return std::make_unique<BankAccount>(label, (float)amountNumber, type);
         case Saving:
-            return std::make_unique<SavingAccount>(label, (float)amountNumber);
+            return std::make_unique<SavingAccount>(label, (float)amountNumber, type);
         default:
             return nullptr;
     }

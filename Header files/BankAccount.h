@@ -10,8 +10,6 @@ public:
 
     void addOperation(std::unique_ptr<BankOperation> operation) override;
     void removeOperation(std::unique_ptr<BankOperation> operation) override;
-
-private:
 };
 
 

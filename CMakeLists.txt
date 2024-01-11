@@ -2,7 +2,11 @@ cmake_minimum_required(VERSION 3.22)
 project(Progetto_programmazione)
 
 set(CMAKE_CXX_STANDARD 14)
-set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/MainFrame.cpp" "Header files/MainFrame.h" "Header files/Constants.h"
+
+add_subdirectory(unit_test)
+
+set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/MainFrame.cpp" "Header files/MainFrame.h"
+        "Header files/Constants.h"
         "Source files/BankOperation.cpp"
         "Header files/BankOperation.h"
         "Source files/BankAccount.cpp"
@@ -39,3 +43,4 @@ add_executable(Progetto_programmazione "Source files/MyApp.cpp")
 add_library(coreLibrary ${SOURCE_FILE})
 
 target_link_libraries(Progetto_programmazione coreLibrary ${wxWidgets_LIBRARIES})
+target_link_libraries(coreLibrary ${wxWidgets_LIBRARIES})

@@ -18,11 +18,11 @@ const float &Account::getAmount() const {
     return amount;
 }
 
-Account::~Account() {
-
-}
-
 AccountType Account::getType() const {
     return type;
+}
+
+Account::~Account() {
+
 }
 
