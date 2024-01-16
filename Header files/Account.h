@@ -5,6 +5,7 @@
 #include <list>
 #include <memory>
 #include <algorithm>
+#include <vector>
 #include "BankOperation.h"
 #include "Account.h"
 #include "Constants.h"
@@ -18,8 +19,9 @@ public:
 
     virtual void addOperation(std::unique_ptr<BankOperation> operation) = 0;
     virtual void removeOperation(std::unique_ptr<BankOperation> operation) = 0;
+    virtual void modifyOperation(const long &operationIndex, const wxString& amount, const wxDateTime& date, const wxDateTime& time) = 0;
 
-    const std::list<std::unique_ptr<BankOperation>> &getOperationList() const;
+    const std::vector<std::unique_ptr<BankOperation>> &getOperationList() const;
     const wxString &getLabel() const;
     const float &getAmount() const;
 
@@ -29,7 +31,7 @@ protected:
     AccountType type;
     wxString label;
     float amount;
-    std::list<std::unique_ptr<BankOperation>> operationList;
+    std::vector<std::unique_ptr<BankOperation>> operationList;
 };
 
 

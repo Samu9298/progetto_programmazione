@@ -15,6 +15,7 @@ static const wxString OPERATION_DIALOG_NAME = "Operation";
 static const wxString CHOOSE_ACCOUNT = "Choose your account:";
 static const wxString ACCOUNT_DIALOG_LABEL = "Label";
 static const wxString ACCOUNT_DIALOG_AMOUNT = "Amount";
+static const wxString ACCOUNT_DIALOG_BUDGET = "Budget (only for Saving account)";
 static const wxString ACCOUNT_DIALOG_OK = "Ok";
 static const wxString ACCOUNT = "Account";
 static const wxString OPERATION_DIALOG_LABEL = "Label";
@@ -24,9 +25,11 @@ static const wxString OPERATION_DIALOG_HOUR = "Hour";
 static const wxString OPERATION_DIALOG_OK = "Ok";
 static const wxString SEPARATOR = ",";
 static const wxString ACCOUNT_TYPE_STRING = "Type";
+static const wxString SAVING_ACCOUNT = "Saving account";
 
 //errors
 static const wxString ACCOUNT_ERROR = "Account not created: one or more field are empty";
+static const wxString ACCOUNT_FOUND_ERROR = "Account not created: label already used";
 static const wxString OPERATION_ERROR = "Operation not created: one or more field are empty";
 
 //operation labels
@@ -34,7 +37,7 @@ static const std::map<wxString, bool> OPERATION_LABELS = {{"Bank deposit", true}
                                                {"Medical expense", false}, {"Fun", false},
                                                {"Trip", false}, {"Food", false},
                                                {"Clothes", false}, {"Animals", false},
-                                               {"Salary", true}};
+                                               {"Salary", true}, {"Saved", true}};
 enum AccountType {
     Bank, Saving
 };
@@ -44,8 +47,10 @@ static const std::map< wxString, AccountType> ACCOUNT_TYPE = {{ "Bank account", 
 
 //constants for BankAccountView
 static const wxString VIEW_COLUMN[] = {"Label", "Amount", "Date", "Time"};
-static const int ACCOUNT_VIEW_STATUS_BAR_SIZE = 2;
+static const int BANK_ACCOUNT_VIEW_STATUS_BAR_SIZE = 2;
+static const int SAVING_ACCOUNT_VIEW_STATUS_BAR_SIZE = 4;
 static const wxString ACCOUNT_VIEW_AMOUNT = "Amount";
+static const wxString SAVING_ACCOUNT_VIEW_BUDGET= "Budget to reach";
 static const wxString ACCOUNT_VIEW_FILTER_LABEL = "Label";
 static const wxString ACCOUNT_VIEW_FILTER_AMOUNT = "Amount";
 static const wxString ACCOUNT_VIEW_FILTER_INCOME = "Income";
@@ -59,7 +64,7 @@ static const wxSize LOGO_SIZE = wxSize(540, 540);
 static const wxSize OPERATION_DIALOG_SIZE = wxSize(500, 350);
 static const wxSize DELETE_OPERATION_DIALOG_SIZE = wxSize(500, 200);
 static const wxSize MAIN_LABEL_TEXT_SIZE = wxSize(150, 50);
-static const wxSize ACCOUNT_DIALOG_SIZE = wxSize(500, 300);
+static const wxSize ACCOUNT_DIALOG_SIZE = wxSize(500, 350);
 static const wxSize DELETE_ACCOUNT_DIALOG_SIZE = wxSize(500, 205);
 static const int LABEL_CHOICE_BORDER = 5;
 static const int DIALOG_BORDER = 15;

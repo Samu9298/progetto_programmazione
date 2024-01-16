@@ -10,15 +10,18 @@ std::shared_ptr<AccountFactory> AccountFactory::getInstance() {
     return instance;
 }
 
-std::unique_ptr<Account> AccountFactory::createAccount(AccountType type, const wxString &label, const wxString &amount) {
+std::unique_ptr<Account> AccountFactory::createAccount(AccountType type, const wxString &label, const wxString &amount,
+                                                       const wxString& budget) {
     double amountNumber;
     amount.ToDouble(&amountNumber);
 
     switch (type) {
         case Bank:
-            return std::make_unique<BankAccount>(label, (float)amountNumber, type);
+            return std::make_unique<BankAccount>(label, (float)amountNumber);
         case Saving:
-            return std::make_unique<SavingAccount>(label, (float)amountNumber, type);
+            double budgetNumber;
+            amount.ToDouble(&budgetNumber);
+            return std::make_unique<SavingAccount>(label, (float)amountNumber, (float)budgetNumber);
         default:
             return nullptr;
     }

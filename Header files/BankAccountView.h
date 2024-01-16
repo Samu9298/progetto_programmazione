@@ -14,7 +14,7 @@
 #include "OperationDialog.h"
 #include "DeleteOperationDialog.h"
 
-class BankAccountView : public View, public wxFrame {
+class BankAccountView : public View {
 public:
     BankAccountView(wxFrame *parent, const wxString& title, const wxString& accountTarget, const wxPoint& pos = wxDefaultPosition,
                     const wxSize& size = MAIN_SIZE);

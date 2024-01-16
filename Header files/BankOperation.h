@@ -9,14 +9,17 @@ public:
     virtual ~BankOperation();
 
     const wxString &getLabel() const;
-
     float getAmount() const;
-
     bool getIsIncome() const;
-
     const wxDateTime &getDate() const;
-
     const wxDateTime &getTime() const;
+
+    void setLabel(const wxString &newLabel);
+    void setAmount(float newAmount);
+    void setDate(const wxDateTime &newDate);
+    void setHour(const wxDateTime &newHour);
+
+    void setIsIncome(bool newIsIncome);
 
     bool operator==(const BankOperation &rhs) const;
 

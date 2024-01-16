@@ -11,10 +11,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
                                                wxDefaultPosition,LOGO_SIZE);
     mainSizer->Add(image, 0, wxALIGN_CENTER);
 
-    for (const auto &iterator: AccountCollection::getInstance()->getAccountList()) {
-        choices.push_back(iterator.first);
-    }
-
     wxBoxSizer *labelSizer = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText *labelText = new wxStaticText(this, wxID_ANY, CHOOSE_ACCOUNT, wxDefaultPosition,
                                                MAIN_LABEL_TEXT_SIZE);
@@ -46,7 +42,7 @@ void MainFrame::onListButtonClicked(wxCommandEvent &event) {
         accountView = new BankAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
     }
     if (typeInfo == typeid(SavingAccount)) {
-        accountView = new BankAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
+        accountView = new SavingAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
     }
 
     accountView->Show(true);
@@ -72,6 +68,7 @@ void MainFrame::onDeleteAccountClicked(wxCommandEvent &event) {
 
 void MainFrame::updateChoice() {
     labelChoice->Clear();
+    int pos = 0;
     for (const auto &iterator: AccountCollection::getInstance()->getAccountList()) {
         labelChoice->Append(iterator.first);
     }

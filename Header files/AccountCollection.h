@@ -22,6 +22,8 @@ public:
     void removeAccount(const wxString& label);
     void createOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation);
     void deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation);
+    void modifyOperation(const wxString &accountTarget, const long &operationIndex, const wxString& amount = wxEmptyString,
+                         const wxDateTime& date = wxDateTime(), const wxDateTime& time = wxDateTime());
 
     const std::map<wxString, std::unique_ptr<Account>> &getAccountList() const;
 

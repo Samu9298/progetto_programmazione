@@ -1,7 +1,7 @@
 #include "../Header files/BankAccountView.h"
 
 BankAccountView::BankAccountView(wxFrame *parent, const wxString& title, const wxString& accountTarget, const wxPoint& pos,
-                                 const wxSize& size): wxFrame(parent, wxID_ANY, title, pos, size) {
+                                 const wxSize& size): View(parent, title, pos, size) {
     this->accountTarget = accountTarget;
     AccountCollection::getInstance()->registerModelObserver(this);
 
@@ -58,7 +58,7 @@ BankAccountView::BankAccountView(wxFrame *parent, const wxString& title, const w
     mainPanel->SetSizer(mainSizer);
     SetMenuBar(menuBar);
 
-    statusBar = CreateStatusBar(ACCOUNT_VIEW_STATUS_BAR_SIZE);
+    statusBar = CreateStatusBar(BANK_ACCOUNT_VIEW_STATUS_BAR_SIZE);
     statusBar->SetStatusText(ACCOUNT_VIEW_AMOUNT);
     statusBar->SetStatusText(wxString::Format(wxT("%.2f"),AccountCollection::getInstance()->getAccountList().at(accountTarget)->getAmount()), 1);
  }
@@ -119,7 +119,13 @@ void BankAccountView::onRemoveFiltersClicked(wxCommandEvent &event) {
 }
 
 void BankAccountView::onItemListCLicked(wxListEvent &event) {
-    wxMessageBox("Prova");
+    long index = event.GetIndex();
+
+    OperationDialog* operationDialog = new OperationDialog(this, wxID_ANY, OPERATION_DIALOG_NAME, wxDefaultPosition, OPERATION_DIALOG_SIZE, accountTarget,
+                                                           index, true);
+
+    operationDialog->ShowModal();
+    operationDialog->Destroy();
 }
 
 void BankAccountView::createListView(const wxString& account) {
@@ -135,15 +141,16 @@ void BankAccountView::createListView(const wxString& account) {
 
 void BankAccountView::populateListView(const wxString& account) {
     int index = 0;
-    for (const auto& iterator : AccountCollection::getInstance()->getAccountList().at(account)->getOperationList()) {
+    for (auto iterator = AccountCollection::getInstance()->getAccountList().at(account)->getOperationList().rbegin();
+        iterator != AccountCollection::getInstance()->getAccountList().at(account)->getOperationList().rend(); ++iterator) {
         int column = 1;
-        operationListView->InsertItem(index, iterator->getLabel());
-        if (iterator->getIsIncome()) {
-            operationListView->SetItem(index, column, wxT("+") + wxString::Format(wxT("%.2f"), iterator->getAmount()));
+        operationListView->InsertItem(index, (*iterator)->getLabel());
+        if ((*iterator)->getIsIncome()) {
+            operationListView->SetItem(index, column, wxT("+") + wxString::Format(wxT("%.2f"), (*iterator)->getAmount()));
         } else {
-            operationListView->SetItem(index, column, wxT("-") + wxString::Format(wxT("%.2f"), iterator->getAmount()));
+            operationListView->SetItem(index, column, wxT("-") + wxString::Format(wxT("%.2f"), (*iterator)->getAmount()));
         }
-        operationListView->SetItem(index, ++column, iterator->getDate().FormatDate());
-        operationListView->SetItem(index, ++column, iterator->getTime().FormatTime());
+        operationListView->SetItem(index, ++column, (*iterator)->getDate().FormatDate());
+        operationListView->SetItem(index, ++column, (*iterator)->getTime().FormatTime());
     }
 }

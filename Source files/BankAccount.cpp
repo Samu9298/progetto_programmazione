@@ -11,7 +11,7 @@ void BankAccount::addOperation(std::unique_ptr<BankOperation> operation) {
         this->amount -= operation->getAmount();
     }
 
-    this->operationList.push_back(std::move(operation));
+    this->operationList.insert(operationList.begin(), std::move(operation));
 }
 
 void BankAccount::removeOperation(std::unique_ptr<BankOperation> operation) {
@@ -30,5 +30,28 @@ void BankAccount::removeOperation(std::unique_ptr<BankOperation> operation) {
         } else {
             ++iterator;
         }
+    }
+}
+
+void BankAccount::modifyOperation(const long &operationIndex, const wxString &operationAmount,
+                              const wxDateTime &date, const wxDateTime &time) {
+
+    double amountNumber;
+    operationAmount.ToDouble(&amountNumber);
+    if (operationAmount != wxEmptyString && (float)amountNumber != operationList[operationIndex]->getAmount()) {
+        if (!operationList[operationIndex]->getIsIncome()) {
+            amount = amount + operationList[operationIndex]->getAmount() - (float)amountNumber;
+        } else {
+            amount = amount - operationList[operationIndex]->getAmount() + (float)amountNumber;
+        }
+        operationList[operationIndex]->setAmount((float)amountNumber);
+    }
+
+    if (date.IsValid() && date != operationList[operationIndex]->getDate()) {
+        operationList[operationIndex]->setDate(date);
+    }
+
+    if (date.IsValid() && date != operationList[operationIndex]->getTime()) {
+        operationList[operationIndex]->setHour(time);
     }
 }

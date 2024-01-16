@@ -8,9 +8,22 @@ std::shared_ptr<Controller> Controller::getInstance() {
     return instance;
 }
 
-void Controller::createAccount(AccountType type, const wxString &label, const wxString &amount) {
-    std::unique_ptr<Account> newAccount = AccountFactory::getInstance()->createAccount(type, label, amount);
-    AccountCollection::getInstance()->addAccount(std::move(newAccount));
+bool Controller::createAccount(AccountType type, const wxString &label, const wxString &amount, const wxString& budget) {
+    bool created = false;
+    bool found = false;
+    for (const auto& iterator: AccountCollection::getInstance()->getAccountList()) {
+        if (label == iterator.first) {
+            found = true;
+        }
+    }
+
+    if (!found) {
+        std::unique_ptr<Account> newAccount = AccountFactory::getInstance()->createAccount(type, label, amount, budget);
+        AccountCollection::getInstance()->addAccount(std::move(newAccount));
+        created = true;
+    }
+
+    return created;
 }
 
 void Controller::deleteAccount(const wxString &label) {
@@ -29,6 +42,11 @@ void Controller::createOperation(const wxString &accountTarget, const wxString &
 
 void Controller::deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation) {
     AccountCollection::getInstance()->deleteOperation(accountTarget, std::move(operation));
+}
+
+void Controller::modifyOperation(const wxString &accountTarget, const long &operationIndex, const wxString &amount,
+                                 const wxDateTime &date, const wxDateTime &time) {
+    AccountCollection::getInstance()->modifyOperation(accountTarget, operationIndex, amount, date, time);
 }
 
 

@@ -35,6 +35,8 @@ set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/Ma
         "Header files/Account.h"
         "Source files/SavingAccount.cpp"
         "Header files/SavingAccount.h"
+        "Source files/SavingAccountView.cpp"
+        "Header files/SavingAccountView.h"
 )
 
 find_package(wxWidgets REQUIRED COMPONENTS net core base adv)

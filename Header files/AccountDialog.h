@@ -1,7 +1,8 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_ACCOUNTDIALOG_H
 #define PROGETTO_PROGRAMMAZIONE_ACCOUNTDIALOG_H
 
-#include "wx/wx.h"
+#include <wx/wx.h>
+#include <wx/valtext.h>
 #include "Constants.h"
 #include "AccountCollection.h"
 #include "AccountFactory.h"
@@ -16,10 +17,14 @@ public:
 private:
     wxTextCtrl *labelBox;
     wxTextCtrl *amountBox;
+    wxTextCtrl *budgetBox;
     wxChoice *typeChoice;
+    wxString amount;
+    wxString budget;
 
     //void onUpdateOkButton(wxUpdateUIEvent& event);
     void onOkButtonClicked(wxCommandEvent& event);
+    void onListClicked(wxCommandEvent &event);
 };
 
 

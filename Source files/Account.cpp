@@ -10,7 +10,7 @@ const wxString &Account::getLabel() const {
     return label;
 }
 
-const std::list<std::unique_ptr<BankOperation>> &Account::getOperationList() const {
+const std::vector<std::unique_ptr<BankOperation>> &Account::getOperationList() const {
     return operationList;
 }
 

@@ -10,13 +10,14 @@
 #include "BankAccountView.h"
 #include "AccountDialog.h"
 #include "DeleteAccountDialog.h"
+#include "SavingAccountView.h"
 
 class MainFrame: public wxFrame {
 public:
     explicit MainFrame(const wxString& title, const wxPoint& pos = wxDefaultPosition, const wxSize& size = MAIN_SIZE);
 
 private:
-    BankAccountView *accountView;
+    View *accountView;
     wxChoice *labelChoice;
     wxArrayString choices;
 

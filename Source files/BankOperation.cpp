@@ -39,4 +39,24 @@ bool BankOperation::operator==(const BankOperation &rhs) const {
            hour == rhs.hour;
 }
 
+void BankOperation::setLabel(const wxString &newLabel) {
+    BankOperation::label = newLabel;
+}
+
+void BankOperation::setAmount(float newAmount) {
+    BankOperation::amount = newAmount;
+}
+
+void BankOperation::setDate(const wxDateTime &newDate) {
+    BankOperation::date = newDate;
+}
+
+void BankOperation::setHour(const wxDateTime &newHour) {
+    BankOperation::hour = newHour;
+}
+
+void BankOperation::setIsIncome(bool newIsIncome) {
+    BankOperation::isIncome = newIsIncome;
+}
+
 

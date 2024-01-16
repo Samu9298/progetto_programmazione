@@ -1,7 +1,7 @@
 #include "../Header files/OperationDialog.h"
 
 OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString &title, const wxPoint &pos,
-                                 const wxSize &size, const wxString& accountTarget) :
+                                 const wxSize &size, const wxString& accountTarget, long operationIndex, bool isEditing) :
                                  wxDialog(parent, id, title, pos, size) {
     this->accountTarget = accountTarget;
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -19,13 +19,15 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     mainSizer->Add(labelSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
 
     //amount
-    //TODO: aggiungi validator per far inserire solo numeri e punto
     wxBoxSizer *amountSizer = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText *amountText = new wxStaticText(this, wxID_ANY, OPERATION_DIALOG_AMOUNT);
     amountText->SetMinSize(wxSize(amountText->GetMinSize().x, amountText->GetMinSize().y));
     amountSizer->Add(amountText, 0, wxRIGHT, DIALOG_BORDER);
 
     amountBox = new wxTextCtrl(this, wxID_ANY);
+    wxTextValidator amountValidator(wxFILTER_NUMERIC, &amount);
+    amountValidator.SetCharIncludes(".");
+    amountBox->SetValidator(amountValidator);
     amountSizer->Add(amountBox, 1);
 
     mainSizer->Add(amountSizer, 0, wxEXPAND | wxLEFT | wxTOP | wxRIGHT, DIALOG_BORDER);
@@ -56,21 +58,43 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     mainSizer->Add(okButton, 0, wxALIGN_RIGHT | wxTOP | wxBOTTOM | wxRIGHT, DIALOG_BORDER);
     Bind(wxEVT_BUTTON, &OperationDialog::onOkButtonClicked, this, okButton->GetId());
 
+    if (isEditing) {
+        this->isEditing = isEditing;
+        this->operationIndex = operationIndex;
+        labelChoice->SetStringSelection(AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()[operationIndex]->getLabel());
+        amountBox->SetValue(wxString::Format(wxT("%f"), AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()[operationIndex]->getAmount()));
+        datePicker->SetValue(AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()[operationIndex]->getDate());
+        timePicker->SetValue(AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()[operationIndex]->getTime());
+        labelChoice->Disable();
+    }
+
     SetSizer(mainSizer);
     SetSize(OPERATION_DIALOG_SIZE);
 }
 
 void OperationDialog::onOkButtonClicked(wxCommandEvent &event) {
-    if(!amountBox->GetValue().empty()) {
-        int selection = labelChoice->GetSelection();
-        wxString selectedLabel = labelChoice->GetString(selection);
-        if(!selectedLabel.empty()) {
-            Controller::getInstance()->createOperation(this->accountTarget, selectedLabel,
-                                                       amountBox->GetValue(), datePicker->GetValue(),
-                                                       timePicker->GetValue());
-        }
+    int selection = labelChoice->GetSelection();
+    wxString selectedLabel = labelChoice->GetString(selection);
+
+    if(isEditing) {
+        Controller::getInstance()->modifyOperation(accountTarget, operationIndex, amountBox->GetValue(),
+                                                   datePicker->GetValue(), timePicker->GetValue());
+        this->Destroy();
     } else {
-        wxMessageBox(OPERATION_ERROR);
+        if(!amountBox->GetValue().empty()) {
+            double amountNumber;
+            amountBox->GetValue().ToDouble(&amountNumber);
+
+            if(!selectedLabel.empty() || amountNumber != 0) {
+                Controller::getInstance()->createOperation(this->accountTarget, selectedLabel,
+                                                           amountBox->GetValue(), datePicker->GetValue(),
+                                                           timePicker->GetValue());
+            } else {
+                wxMessageBox(OPERATION_ERROR);
+            }
+        } else {
+            wxMessageBox(OPERATION_ERROR);
+        }
     }
     amountBox->Clear();
 }

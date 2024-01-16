@@ -50,4 +50,9 @@ void AccountCollection::deleteOperation(const wxString &accountTarget, std::uniq
     notify();
 }
 
+void AccountCollection::modifyOperation(const wxString &accountTarget, const long &operationIndex, const wxString &amount, const wxDateTime &date, const wxDateTime &time) {
+    accountList.at(accountTarget)->modifyOperation(operationIndex, amount, date, time);
+    notify();
+}
+
 

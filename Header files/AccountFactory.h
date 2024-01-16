@@ -12,7 +12,7 @@ public:
 
     virtual ~AccountFactory();
 
-    std::unique_ptr<Account> createAccount(AccountType type, const wxString &label, const wxString &amount);
+    std::unique_ptr<Account> createAccount(AccountType type, const wxString &label, const wxString &amount, const wxString& budget);
 
 private:
     static std::shared_ptr<AccountFactory> instance;

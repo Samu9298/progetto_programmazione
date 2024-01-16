@@ -15,6 +15,7 @@ AccountDialog::AccountDialog(wxWindow *parent, wxWindowID id, const wxString &ti
     }
     typeChoice = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, choices);
     typeSizer->Add(typeChoice, 1);
+    Bind(wxEVT_CHOICE, &AccountDialog::onListClicked, this, typeChoice->GetId());
 
     mainSizer->Add(typeSizer, 0, wxALL | wxEXPAND, DIALOG_BORDER);
 
@@ -27,15 +28,30 @@ AccountDialog::AccountDialog(wxWindow *parent, wxWindowID id, const wxString &ti
 
     mainSizer->Add(labelSizer, 0, wxLEFT | wxRIGHT | wxBOTTOM | wxEXPAND, DIALOG_BORDER);
 
-    //TODO: aggiungi validator per far inserire solo numeri e punto
     wxBoxSizer *amountSizer = new wxBoxSizer(wxHORIZONTAL);
     wxStaticText *amountText = new wxStaticText(this, wxID_ANY, ACCOUNT_DIALOG_AMOUNT);
     amountSizer->Add(amountText, 0, wxRIGHT, DIALOG_BORDER);
 
     amountBox = new wxTextCtrl(this, wxID_ANY);
+    wxTextValidator amountValidator(wxFILTER_NUMERIC, &amount);
+    amountValidator.SetCharIncludes(".");
+    amountBox->SetValidator(amountValidator);
     amountSizer->Add(amountBox, 1);
 
     mainSizer->Add(amountSizer, 0, wxLEFT| wxRIGHT | wxBOTTOM | wxEXPAND, DIALOG_BORDER);
+
+    wxBoxSizer *budgetSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxStaticText *budgetText = new wxStaticText(this, wxID_ANY, ACCOUNT_DIALOG_BUDGET);
+    budgetSizer->Add(budgetText, 0, wxRIGHT, DIALOG_BORDER);
+
+    budgetBox = new wxTextCtrl(this, wxID_ANY);
+    wxTextValidator savingValidator(wxFILTER_NUMERIC, &budget);
+    amountValidator.SetCharIncludes(".");
+    budgetBox->SetValidator(savingValidator);
+    budgetSizer->Add(budgetBox, 1);
+    budgetBox->Disable();
+
+    mainSizer->Add(budgetSizer, 0, wxLEFT| wxRIGHT | wxBOTTOM | wxEXPAND, DIALOG_BORDER);
 
     wxButton *okButton = new wxButton(this, wxID_ANY, ACCOUNT_DIALOG_OK);
     mainSizer->Add(okButton, 0, wxALIGN_RIGHT | wxRIGHT, DIALOG_BORDER);
@@ -70,11 +86,38 @@ void AccountDialog::onOkButtonClicked(wxCommandEvent &event) {
                 type = iterator.second;
             }
         }
+        if (budgetBox->IsEnabled()) {
+            if (!budgetBox->GetValue().empty()) {
+                bool created = Controller::getInstance()->createAccount(type, labelBox->GetValue(), amountBox->GetValue(),
+                                                                        budgetBox->GetValue());
 
-        Controller::getInstance()->createAccount(type, labelBox->GetValue(), amountBox->GetValue());
+                if(!created) {
+                    wxMessageBox(ACCOUNT_FOUND_ERROR);
+                }
+            }  else {
+                wxMessageBox(ACCOUNT_ERROR);
+            }
+        } else {
+            bool created = Controller::getInstance()->createAccount(type, labelBox->GetValue(), amountBox->GetValue(),
+                                                                    budgetBox->GetValue());
+
+            if(!created) {
+                wxMessageBox(ACCOUNT_FOUND_ERROR);
+            }
+        }
     } else {
         wxMessageBox(ACCOUNT_ERROR);
     }
+
     this->Destroy();
+}
+
+void AccountDialog::onListClicked(wxCommandEvent &event) {
+    int selection = typeChoice->GetSelection();
+    wxString typeSelected = typeChoice->GetString(selection);
+
+    if (typeSelected == SAVING_ACCOUNT) {
+        budgetBox->Enable();
+    }
 }
 
