@@ -4,6 +4,7 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
                                  const wxSize &size, const wxString& accountTarget, long operationIndex, bool isEditing) :
                                  wxDialog(parent, id, title, pos, size) {
     this->accountTarget = accountTarget;
+    this->isEditing = isEditing;
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
     //label
@@ -59,7 +60,6 @@ OperationDialog::OperationDialog(wxWindow *parent, wxWindowID id, const wxString
     Bind(wxEVT_BUTTON, &OperationDialog::onOkButtonClicked, this, okButton->GetId());
 
     if (isEditing) {
-        this->isEditing = isEditing;
         this->operationIndex = operationIndex;
         labelChoice->SetStringSelection(AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()[operationIndex]->getLabel());
         amountBox->SetValue(wxString::Format(wxT("%f"), AccountCollection::getInstance()->getAccountList().at(accountTarget)->getOperationList()[operationIndex]->getAmount()));

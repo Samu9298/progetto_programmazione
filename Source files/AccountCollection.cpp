@@ -9,7 +9,7 @@ std::shared_ptr<AccountCollection> AccountCollection::getInstance() {
 }
 
 void AccountCollection::notify() {
-    for (auto &observerIterator : observerList)
+    for (auto observerIterator : observerList)
         observerIterator->update();
 }
 

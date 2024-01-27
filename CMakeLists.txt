@@ -39,7 +39,7 @@ set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/Ma
         "Header files/SavingAccountView.h"
 )
 
-find_package(wxWidgets REQUIRED COMPONENTS net core base adv)
+find_package(wxWidgets REQUIRED)
 include(${wxWidgets_USE_FILE})
 add_executable(Progetto_programmazione "Source files/MyApp.cpp")
 add_library(coreLibrary ${SOURCE_FILE})

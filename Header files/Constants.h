@@ -4,6 +4,8 @@
 #include <wx/wx.h>
 #include <array>
 #include <map>
+#include <vector>
+#include <wx/colour.h>
 
 //app constants
 static const wxString APP_NAME = "Money Balance";
@@ -26,6 +28,10 @@ static const wxString OPERATION_DIALOG_OK = "Ok";
 static const wxString SEPARATOR = ",";
 static const wxString ACCOUNT_TYPE_STRING = "Type";
 static const wxString SAVING_ACCOUNT = "Saving account";
+static const std::vector<wxColour> PIE_CHART_COLOURS = {wxColour(255, 0, 0), wxColour(0, 255, 0),
+                                                        wxColour(0, 0, 255), wxColour(255, 255, 0),
+                                                        wxColour(255, 0, 255), wxColour(0, 255, 255),
+                                                        wxColour(128, 0, 128)};
 
 //errors
 static const wxString ACCOUNT_ERROR = "Account not created: one or more field are empty";
@@ -56,6 +62,9 @@ static const wxString ACCOUNT_VIEW_FILTER_AMOUNT = "Amount";
 static const wxString ACCOUNT_VIEW_FILTER_INCOME = "Income";
 static const wxString ACCOUNT_VIEW_SEARCH = "Search";
 static const wxString ACCOUNT_VIEW_REMOVE_FILTERS = "Remove all filters";
+
+//constants for SavingAccountView
+static const wxString SAVING_VIEW_PROGRESSION_TITLE = "Goal percentage reached";
 
 //size of different elements
 static const wxSize MAIN_SIZE = wxSize(1920, 1080);

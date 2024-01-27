@@ -20,7 +20,7 @@ std::unique_ptr<Account> AccountFactory::createAccount(AccountType type, const w
             return std::make_unique<BankAccount>(label, (float)amountNumber);
         case Saving:
             double budgetNumber;
-            amount.ToDouble(&budgetNumber);
+            budget.ToDouble(&budgetNumber);
             return std::make_unique<SavingAccount>(label, (float)amountNumber, (float)budgetNumber);
         default:
             return nullptr;

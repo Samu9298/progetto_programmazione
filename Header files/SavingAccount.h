@@ -1,8 +1,8 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_SAVINGACCOUNT_H
 #define PROGETTO_PROGRAMMAZIONE_SAVINGACCOUNT_H
 
+#include <map>
 #include "Account.h"
-#include "Constants.h"
 
 class SavingAccount : public Account {
 public:
@@ -10,11 +10,14 @@ public:
 
     void addOperation(std::unique_ptr<BankOperation> operation) override;
     void removeOperation(std::unique_ptr<BankOperation> operation) override;
-    virtual void modifyOperation(const long &operationIndex, const wxString& amount, const wxDateTime& date, const wxDateTime& time) override;
+    void modifyOperation(const long &operationIndex, const wxString& amount, const wxDateTime& date, const wxDateTime& time) override;
 
     float getBudgetToReach() const;
+    int getPercToBudget() const;
+    const std::map<wxString, double> &getLabelsTotal() const;
 
 private:
+    std::map<wxString, double> labelsTotal;
     float budgetToReach;
     int percToBudget;
 

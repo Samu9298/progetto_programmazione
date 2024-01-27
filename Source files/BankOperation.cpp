@@ -31,14 +31,6 @@ bool BankOperation::getIsIncome() const {
     return isIncome;
 }
 
-bool BankOperation::operator==(const BankOperation &rhs) const {
-    return label == rhs.label &&
-           isIncome == rhs.isIncome &&
-           amount == rhs.amount &&
-           date == rhs.date &&
-           hour == rhs.hour;
-}
-
 void BankOperation::setLabel(const wxString &newLabel) {
     BankOperation::label = newLabel;
 }
