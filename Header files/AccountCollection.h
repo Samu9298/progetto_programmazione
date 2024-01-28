@@ -1,12 +1,16 @@
 #ifndef PROGETTO_PROGRAMMAZIONE_ACCOUNTCOLLECTION_H
 #define PROGETTO_PROGRAMMAZIONE_ACCOUNTCOLLECTION_H
 
-#include <list>
+#include <wx/textfile.h>
+#include <wx/filedlg.h>
+#include <wx/filename.h>
+#include <wx/tokenzr.h>
 #include <map>
 #include <memory>
 #include "Model.h"
 #include "BankOperation.h"
 #include "BankAccount.h"
+#include "SavingAccount.h"
 #include "Constants.h"
 
 class AccountCollection : public Model {

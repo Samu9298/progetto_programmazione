@@ -3,6 +3,10 @@
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size):
     wxFrame(nullptr, wxID_ANY, title, pos, size) {
 
+    Controller::getInstance()->loadFromFile();
+
+    Bind(wxEVT_CLOSE_WINDOW, &MainFrame::onClose, this);
+
     wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
     wxPNGHandler *pngHandler = new wxPNGHandler;
@@ -15,6 +19,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
     wxStaticText *labelText = new wxStaticText(this, wxID_ANY, CHOOSE_ACCOUNT, wxDefaultPosition,
                                                MAIN_LABEL_TEXT_SIZE);
     labelSizer->Add(labelText, 0, wxTOP, LABEL_CHOICE_BORDER);
+
+    for (auto &iterator : AccountCollection::getInstance()->getAccountList()) {
+        choices.push_back(iterator.first);
+    }
+
     labelChoice = new wxChoice(this, wxID_ANY, wxDefaultPosition, labelText->GetSize(), choices);
     labelSizer->Add(labelChoice, 1, wxEXPAND);
     mainSizer->Add(labelSizer, 0, wxALIGN_CENTER);
@@ -68,8 +77,12 @@ void MainFrame::onDeleteAccountClicked(wxCommandEvent &event) {
 
 void MainFrame::updateChoice() {
     labelChoice->Clear();
-    int pos = 0;
     for (const auto &iterator: AccountCollection::getInstance()->getAccountList()) {
         labelChoice->Append(iterator.first);
     }
+}
+
+void MainFrame::onClose(wxCloseEvent &event) {
+    Controller::getInstance()->writeToFile();
+    event.Skip();
 }

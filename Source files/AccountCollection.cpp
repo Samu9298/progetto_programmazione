@@ -54,5 +54,3 @@ void AccountCollection::modifyOperation(const wxString &accountTarget, const lon
     accountList.at(accountTarget)->modifyOperation(operationIndex, amount, date, time);
     notify();
 }
-
-

@@ -24,6 +24,7 @@ private:
     void onListButtonClicked(wxCommandEvent& event);
     void onNewAccountClicked(wxCommandEvent& event);
     void onDeleteAccountClicked(wxCommandEvent& event);
+    void onClose(wxCloseEvent& event);
     void updateChoice();
 };
 

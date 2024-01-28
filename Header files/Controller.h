@@ -24,6 +24,9 @@ public:
     void modifyOperation(const wxString &accountTarget, const long &operationIndex, const wxString& amount = wxEmptyString,
                          const wxDateTime& date = wxDateTime(), const wxDateTime& time = wxDateTime());
 
+    void writeToFile();
+    void loadFromFile();
+
 private:
     static std::shared_ptr<Controller> instance;
 

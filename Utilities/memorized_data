@@ -1,0 +1,4 @@
+Account:prova,Type:Bank account,Amount:300.00,Budget:0.00
+Operation target:prova,Label:Animals,Amount:50.00,Date:01/28/24,Time:10:27:06
+Account:prova2,Type:Saving account,Amount:1500.00,Budget:2000.00
+Operation target:prova2,Label:Bank deposit,Amount:500.00,Date:01/28/24,Time:10:43:24

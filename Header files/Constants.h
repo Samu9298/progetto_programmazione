@@ -36,7 +36,9 @@ static const std::vector<wxColour> PIE_CHART_COLOURS = {wxColour(255, 0, 0), wxC
 //errors
 static const wxString ACCOUNT_ERROR = "Account not created: one or more field are empty";
 static const wxString ACCOUNT_FOUND_ERROR = "Account not created: label already used";
+static const wxString LOADING_ACCOUNT_ERROR = "Account not created: file not correctly loaded";
 static const wxString OPERATION_ERROR = "Operation not created: one or more field are empty";
+static const wxString OPENING_FILE_ERROR = "Error: file not correctly loaded";
 
 //operation labels
 static const std::map<wxString, bool> OPERATION_LABELS = {{"Bank deposit", true}, {"Bank withdraw", false},
@@ -48,7 +50,7 @@ enum AccountType {
     Bank, Saving
 };
 
-static const std::map< wxString, AccountType> ACCOUNT_TYPE = {{ "Bank account", Bank},
+static const std::map< wxString, AccountType> ACCOUNT_TYPE = {{"Bank account", Bank},
                                                              {"Saving account", Saving}};
 
 //constants for BankAccountView
