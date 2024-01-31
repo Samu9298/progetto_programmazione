@@ -8,9 +8,11 @@ class SavingAccount : public Account {
 public:
     explicit SavingAccount(const wxString &label, const float &amount, const float& budgetToReach, AccountType type = Saving);
 
-    void addOperation(std::unique_ptr<BankOperation> operation) override;
+    void addOperation(std::unique_ptr<BankOperation> operation, bool fromFile) override;
     void removeOperation(std::unique_ptr<BankOperation> operation) override;
-    void modifyOperation(const long &operationIndex, const wxString& amount, const wxDateTime& date, const wxDateTime& time) override;
+    void modifyOperation(const long &operationIndex, const wxString& amount,
+                         const wxDateTime date, const wxDateTime time) override;
+    void updateDataFromFileLoading();
 
     float getBudgetToReach() const;
     int getPercToBudget() const;

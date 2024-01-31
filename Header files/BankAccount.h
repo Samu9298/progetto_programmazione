@@ -7,10 +7,10 @@ class BankAccount : public Account {
 public:
     explicit BankAccount(const wxString &label, const float &amount, AccountType type = Bank);
 
-    void addOperation(std::unique_ptr<BankOperation> operation) override;
+    void addOperation(std::unique_ptr<BankOperation> operation, bool fromFile) override;
     void removeOperation(std::unique_ptr<BankOperation> operation) override;
-    void modifyOperation(const long &operationIndex, const wxString& amount = wxEmptyString,
-                         const wxDateTime& date = wxDateTime(), const wxDateTime& time = wxDateTime()) override;
+    void modifyOperation(const long &operationIndex, const wxString& amount,
+                         const wxDateTime date, const wxDateTime time) override;
 };
 
 

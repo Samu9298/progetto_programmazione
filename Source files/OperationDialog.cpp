@@ -88,7 +88,7 @@ void OperationDialog::onOkButtonClicked(wxCommandEvent &event) {
             if(!selectedLabel.empty() || amountNumber != 0) {
                 Controller::getInstance()->createOperation(this->accountTarget, selectedLabel,
                                                            amountBox->GetValue(), datePicker->GetValue(),
-                                                           timePicker->GetValue());
+                                                           timePicker->GetValue(), false);
             } else {
                 wxMessageBox(OPERATION_ERROR);
             }

@@ -67,6 +67,19 @@ static const wxString ACCOUNT_VIEW_REMOVE_FILTERS = "Remove all filters";
 
 //constants for SavingAccountView
 static const wxString SAVING_VIEW_PROGRESSION_TITLE = "Goal percentage reached";
+static const wxString BLANK_LEGEND_TEXT = "Insert some operations to see the pie chart";
+static const wxString PIE_CHART_TITLE = "Expenses pie chart";
+static const wxString SAVING_VIEW_OPERATION_MENU_ITEM = "View operations";
+static const int PIE_CHART_TITLE_X = 475;
+static const int PIE_CHART_TITLE_Y = 175;
+static const int GRAPHIC_CENTER_X = 600;
+static const int GRAPHIC_CENTER_Y = 525;
+static const int GRAPHIC_RADIUS = 300;
+static const int FONT_SIZE = 20;
+static const int LEGEND_CENTER_X = 1250;
+static const int LEGEND_CENTER_Y = 425;
+static const int BLANK_LEGEND_X = 1150;
+static const int BLANK_LEGEND_Y = 475;
 
 //size of different elements
 static const wxSize MAIN_SIZE = wxSize(1920, 1080);
@@ -83,5 +96,7 @@ static const int ACCOUNT_VIEW_BORDER = 15;
 
 //path
 static const wxString LOGO_PATH = "../Utilities/Logo.png";
+static const wxString MEMORY_FILE_NAME = "memorized_data";
+static const wxString MEMORY_FILE_FOR_TEST_NAME = "memorized_data_test";
 
 #endif //PROGETTO_PROGRAMMAZIONE_CONSTANTS_H

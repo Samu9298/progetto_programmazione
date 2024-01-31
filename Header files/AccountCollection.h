@@ -24,7 +24,7 @@ public:
     void removeModelObserver(View* view) override;
     void addAccount(std::unique_ptr<Account> account);
     void removeAccount(const wxString& label);
-    void createOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation);
+    void createOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation, bool fromFile);
     void deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation);
     void modifyOperation(const wxString &accountTarget, const long &operationIndex, const wxString& amount = wxEmptyString,
                          const wxDateTime& date = wxDateTime(), const wxDateTime& time = wxDateTime());

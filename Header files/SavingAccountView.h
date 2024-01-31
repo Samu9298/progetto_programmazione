@@ -5,6 +5,7 @@
 #include "AccountCollection.h"
 #include "OperationDialog.h"
 #include "DeleteOperationDialog.h"
+#include "AccountListView.h"
 
 class SavingAccountView: public View {
 public:
@@ -23,7 +24,11 @@ private:
 
     void onNewClicked(wxCommandEvent &event);
     void onDeleteClicked(wxCommandEvent &event);
+    void onOperationClicked(wxCommandEvent &event);
+    void onPaint(wxPaintEvent &event);
     void updateProgressionBar();
+    void RenderPieChart(wxDC& dc);
+    void DrawLegend(wxDC& dc, bool isFull = false);
 };
 
 

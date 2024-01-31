@@ -37,6 +37,8 @@ set(SOURCE_FILE "Source files/MyApp.cpp" "Header files/MyApp.h" "Source files/Ma
         "Header files/SavingAccount.h"
         "Source files/SavingAccountView.cpp"
         "Header files/SavingAccountView.h"
+        "Source files/AccountListView.cpp"
+        "Header files/AccountListView.h"
 )
 
 find_package(wxWidgets REQUIRED)

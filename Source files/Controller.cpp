@@ -35,9 +35,9 @@ Controller::~Controller() {
 }
 
 void Controller::createOperation(const wxString &accountTarget, const wxString &label, const wxString &amount,
-                                 const wxDateTime &date, const wxDateTime &time) {
+                                 const wxDateTime &date, const wxDateTime &time, bool fromFile) {
     std::unique_ptr<BankOperation> newOperation = std::move(OperationFactory::getInstance()->createOperation(label, amount, date, time));
-    AccountCollection::getInstance()->createOperation(accountTarget, std::move(newOperation));
+    AccountCollection::getInstance()->createOperation(accountTarget, std::move(newOperation), fromFile);
 }
 
 void Controller::deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation) {
@@ -49,9 +49,9 @@ void Controller::modifyOperation(const wxString &accountTarget, const long &oper
     AccountCollection::getInstance()->modifyOperation(accountTarget, operationIndex, amount, date, time);
 }
 
-void Controller::writeToFile() {
+void Controller::writeToFile(const wxString &memorizedFileName) {
     wxString relativePath = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + ".." + wxFileName::GetPathSeparator() + "Utilities" + wxFileName::GetPathSeparator();
-    wxString filename = wxFileName(relativePath, "memorized_data").GetFullPath();
+    wxString filename = wxFileName(relativePath, memorizedFileName).GetFullPath();
 
     wxTextFile textFile;
     if (textFile.Open(filename)) {
@@ -85,9 +85,9 @@ void Controller::writeToFile() {
     }
 }
 
-void Controller::loadFromFile() {
+void Controller::loadFromFile(const wxString &memorizedFileName) {
     wxString relativePath = wxFileName::GetCwd() + wxFileName::GetPathSeparator() + ".." + wxFileName::GetPathSeparator() + "Utilities" + wxFileName::GetPathSeparator();
-    wxString filename = wxFileName(relativePath, "memorized_data").GetFullPath();
+    wxString filename = wxFileName(relativePath, memorizedFileName).GetFullPath();
 
     wxTextFile textFile;
     if (textFile.Open(filename)) {
@@ -111,6 +111,7 @@ void Controller::loadFromFile() {
                 currentBudget = accountTokenizer->GetNextToken().AfterFirst(':');
 
                 bool created = this->createAccount(ACCOUNT_TYPE.at(currentAccountType), currentAccount, currentAmount, currentBudget);
+
                 if (!created) {
                     wxMessageBox(LOADING_ACCOUNT_ERROR);
                 }
@@ -128,11 +129,18 @@ void Controller::loadFromFile() {
                 currentOperationTime.ParseFormat(currentOperationTimeString, "%H:%M:%S");
 
                 this->createOperation(currentOperationTarget, currentOperationLabel, currentOperationAmount,
-                                      currentOperationDate, currentOperationTime);
+                                      currentOperationDate, currentOperationTime, true);
             }
         }
 
         textFile.Close();
+
+        for (const auto& iterator : AccountCollection::getInstance()->getAccountList()) {
+            const std::type_info& typeInfo = typeid(*(iterator.second));
+            if (typeInfo == typeid(SavingAccount)) {
+                dynamic_cast<SavingAccount*>(iterator.second.get())->updateDataFromFileLoading();
+            }
+        }
     } else {
         wxMessageBox(OPENING_FILE_ERROR);
     }

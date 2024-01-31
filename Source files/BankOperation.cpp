@@ -51,4 +51,14 @@ void BankOperation::setIsIncome(bool newIsIncome) {
     BankOperation::isIncome = newIsIncome;
 }
 
+bool BankOperation::operator==(const BankOperation &rhs) const {
+    bool isEqual = false;
+    if (this->label == rhs.getLabel() && this->amount == rhs.getAmount() && this->date.FormatDate() == rhs.getDate().FormatDate()
+        && this->hour.FormatTime() == rhs.getTime().FormatTime()) {
+        isEqual = true;
+    }
+
+    return isEqual;
+}
+
 

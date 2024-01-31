@@ -17,9 +17,9 @@ public:
 
     virtual ~Account();
 
-    virtual void addOperation(std::unique_ptr<BankOperation> operation) = 0;
+    virtual void addOperation(std::unique_ptr<BankOperation> operation, bool fromFile) = 0;
     virtual void removeOperation(std::unique_ptr<BankOperation> operation) = 0;
-    virtual void modifyOperation(const long &operationIndex, const wxString& amount, const wxDateTime& date, const wxDateTime& time) = 0;
+    virtual void modifyOperation(const long &operationIndex, const wxString& amount, const wxDateTime date, const wxDateTime time) = 0;
 
     const std::vector<std::unique_ptr<BankOperation>> &getOperationList() const;
     const wxString &getLabel() const;

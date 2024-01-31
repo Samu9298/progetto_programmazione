@@ -4,11 +4,13 @@ BankAccount::BankAccount(const wxString &label, const float &amount, AccountType
 
 }
 
-void BankAccount::addOperation(std::unique_ptr<BankOperation> operation) {
-    if(operation->getIsIncome()) {
-        this->amount += operation->getAmount();
-    } else {
-        this->amount -= operation->getAmount();
+void BankAccount::addOperation(std::unique_ptr<BankOperation> operation, bool fromFile) {
+    if (!fromFile) {
+        if (operation->getIsIncome()) {
+            this->amount += operation->getAmount();
+        } else {
+            this->amount -= operation->getAmount();
+        }
     }
 
     this->operationList.insert(operationList.begin(), std::move(operation));
@@ -17,9 +19,7 @@ void BankAccount::addOperation(std::unique_ptr<BankOperation> operation) {
 void BankAccount::removeOperation(std::unique_ptr<BankOperation> operation) {
     auto iterator = operationList.begin();
     while (iterator != operationList.end()) {
-        if ((*iterator)->getLabel() == operation->getLabel() && (*iterator)->getAmount() == operation->getAmount() &&
-                (*iterator)->getIsIncome() == operation->getIsIncome() && (*iterator)->getDate().FormatDate() == operation->getDate().FormatDate()
-                && (*iterator)->getTime().FormatTime() == operation->getTime().FormatTime()) {
+        if (iterator->get()->operator==(*operation)) {
             iterator = operationList.erase(iterator);
             if (operation->getIsIncome()) {
                 this->amount -= operation->getAmount();
@@ -34,7 +34,7 @@ void BankAccount::removeOperation(std::unique_ptr<BankOperation> operation) {
 }
 
 void BankAccount::modifyOperation(const long &operationIndex, const wxString &operationAmount,
-                              const wxDateTime &date, const wxDateTime &time) {
+                              const wxDateTime date, const wxDateTime time) {
 
     double amountNumber;
     operationAmount.ToDouble(&amountNumber);

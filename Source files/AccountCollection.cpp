@@ -40,8 +40,8 @@ void AccountCollection::removeAccount(const wxString& label) {
     }
 }
 
-void AccountCollection::createOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation) {
-    accountList.at(accountTarget)->addOperation(std::move(operation));
+void AccountCollection::createOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation, bool fromFile) {
+    accountList.at(accountTarget)->addOperation(std::move(operation), fromFile);
     notify();
 }
 

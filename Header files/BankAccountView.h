@@ -13,8 +13,9 @@
 #include "Constants.h"
 #include "OperationDialog.h"
 #include "DeleteOperationDialog.h"
+#include "AccountListView.h"
 
-class BankAccountView : public View {
+class BankAccountView : public AccountListView {
 public:
     BankAccountView(wxFrame *parent, const wxString& title, const wxString& accountTarget, const wxPoint& pos = wxDefaultPosition,
                     const wxSize& size = MAIN_SIZE);
@@ -23,20 +24,10 @@ public:
     void update() override;
 
 private:
-    wxString accountTarget;
-    wxListView *operationListView;
     wxStatusBar *statusBar;
-    wxChoice *labelFilterCtrl;
-    wxTextCtrl *amountFilterCtrl;
-    wxCheckBox *incomeFilter;
 
     void onNewClicked(wxCommandEvent &event);
     void onDeleteClicked(wxCommandEvent &event);
-    void onSearchClicked(wxCommandEvent &event);
-    void onRemoveFiltersClicked(wxCommandEvent &event);
-    void onItemListCLicked(wxListEvent &event);
-    void createListView(const wxString& account);
-    void populateListView(const wxString& account);
 };
 
 

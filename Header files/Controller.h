@@ -3,6 +3,7 @@
 
 #include <wx/wx.h>
 #include <memory>
+#include <typeinfo>
 #include "AccountFactory.h"
 #include "AccountCollection.h"
 #include "OperationFactory.h"
@@ -19,13 +20,13 @@ public:
     void deleteAccount(const wxString &label);
 
     void createOperation(const wxString& accountTarget, const wxString& label, const wxString& amount, const wxDateTime& date,
-                         const wxDateTime& time);
+                         const wxDateTime& time, bool fromFile);
     void deleteOperation(const wxString &accountTarget, std::unique_ptr<BankOperation> operation);
     void modifyOperation(const wxString &accountTarget, const long &operationIndex, const wxString& amount = wxEmptyString,
                          const wxDateTime& date = wxDateTime(), const wxDateTime& time = wxDateTime());
 
-    void writeToFile();
-    void loadFromFile();
+    void writeToFile(const wxString &memorizedFileName);
+    void loadFromFile(const wxString &memorizedFileName);
 
 private:
     static std::shared_ptr<Controller> instance;

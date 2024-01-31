@@ -3,7 +3,7 @@
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size):
     wxFrame(nullptr, wxID_ANY, title, pos, size) {
 
-    Controller::getInstance()->loadFromFile();
+    Controller::getInstance()->loadFromFile(MEMORY_FILE_NAME);
 
     Bind(wxEVT_CLOSE_WINDOW, &MainFrame::onClose, this);
 
@@ -48,10 +48,10 @@ void MainFrame::onListButtonClicked(wxCommandEvent &event) {
     auto& accountList = AccountCollection::getInstance()->getAccountList();
     const std::type_info& typeInfo = typeid(*accountList.at(selectedAccount));
     if (typeInfo == typeid(BankAccount)) {
-        accountView = new BankAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
+        accountView = new BankAccountView(this, selectedAccount, selectedAccount);
     }
     if (typeInfo == typeid(SavingAccount)) {
-        accountView = new SavingAccountView(this, selectedAccount + SEPARATOR + ACCOUNT_VIEW, selectedAccount);
+        accountView = new SavingAccountView(this, selectedAccount, selectedAccount);
     }
 
     accountView->Show(true);
@@ -83,6 +83,6 @@ void MainFrame::updateChoice() {
 }
 
 void MainFrame::onClose(wxCloseEvent &event) {
-    Controller::getInstance()->writeToFile();
+    Controller::getInstance()->writeToFile(MEMORY_FILE_NAME);
     event.Skip();
 }
